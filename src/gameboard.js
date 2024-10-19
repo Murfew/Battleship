@@ -47,19 +47,28 @@ export class Gameboard {
       }
     }
 
+    currentShip.coordinates.push(start);
+
     switch (direction) {
       case "N":
-        currentShip.coordinates.push(start);
-
         for (let i = 0; i < currentShip.ship.length - 1; i++) {
           currentShip.coordinates.push([start[0], start[1] + 1]);
         }
 
       case "E":
+        for (let i = 0; i < currentShip.ship.length - 1; i++) {
+          currentShip.coordinates.push([start[0] + 1, start[1]]);
+        }
 
       case "S":
+        for (let i = 0; i < currentShip.ship.length - 1; i++) {
+          currentShip.coordinates.push([start[0], start[1] - 1]);
+        }
 
       case "W":
+        for (let i = 0; i < currentShip.ship.length - 1; i++) {
+          currentShip.coordinates.push([start[0] - 1, start[1]]);
+        }
     }
   }
 }
