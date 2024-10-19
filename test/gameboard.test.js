@@ -24,3 +24,14 @@ it("places a ship on the gameboard", () => {
     [0, 1],
   ]);
 });
+
+it("records a hit if an attack landed on a ship", () => {
+  gameboard.receiveAttack([0, 0]);
+  expect(gameboard.hits).toStrictEqual([[0, 0]]);
+  expect(gameboard.ships[4].ship.hits).toBe(1);
+});
+
+it("records a miss if an attack missed a ship", () => {
+  gameboard.receiveAttack([1, 1]);
+  expect(gameboard.misses).toStrictEqual([[1, 1]]);
+});
