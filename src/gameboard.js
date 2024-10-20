@@ -1,5 +1,3 @@
-// TODO input validation
-
 import { Ship } from "./ship";
 
 export class Gameboard {
@@ -37,6 +35,7 @@ export class Gameboard {
     return this.#hits;
   }
 
+  // TODO input validation
   placeShip(name, start, direction) {
     let currentShip;
 
@@ -54,21 +53,44 @@ export class Gameboard {
         for (let i = 0; i < currentShip.ship.length - 1; i++) {
           currentShip.coordinates.push([start[0], start[1] + 1]);
         }
+        break;
 
       case "E":
         for (let i = 0; i < currentShip.ship.length - 1; i++) {
           currentShip.coordinates.push([start[0] + 1, start[1]]);
         }
+        break;
 
       case "S":
         for (let i = 0; i < currentShip.ship.length - 1; i++) {
           currentShip.coordinates.push([start[0], start[1] - 1]);
         }
+        break;
 
       case "W":
         for (let i = 0; i < currentShip.ship.length - 1; i++) {
           currentShip.coordinates.push([start[0] - 1, start[1]]);
         }
+        break;
     }
+  }
+
+  #compareArrays(a, b) {
+    return a.toString() === b.toString();
+  }
+
+  receiveAttack(coordinates) {
+    // see if coordinates belong to a ship
+    for (const ship of this.#ships) {
+      for (const coordinate of ship.coordinates) {
+        if (this.#compareArrays(coordinate, coordinates)) {
+          this.#hits.push(coordinates);
+          ship.ship.hit();
+          return;
+        }
+      }
+    }
+
+    this.#misses.push(coordinates);
   }
 }

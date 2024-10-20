@@ -1,5 +1,3 @@
-// TODO input validation
-
 export class Ship {
   #length;
   #hits;
