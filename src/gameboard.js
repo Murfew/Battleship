@@ -93,4 +93,13 @@ export class Gameboard {
 
     this.#misses.push(coordinates);
   }
+
+  checkShips() {
+    for (const obj of this.#ships) {
+      if (!obj.ship.isSunk()) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
