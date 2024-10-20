@@ -11,8 +11,10 @@ export function renderPlayerBoard(player) {
     boardContainer.appendChild(boardRow);
 
     for (let j = 0; j < player.board.size; j++) {
-      const boardCell = document.createElement("button");
+      const boardCell = document.createElement("div");
       boardCell.setAttribute("class", "cell");
+      boardCell.dataset.y = player.board.size - i - 1;
+      boardCell.dataset.x = j;
       boardRow.appendChild(boardCell);
     }
   }
