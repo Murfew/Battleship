@@ -1,0 +1,22 @@
+body {
+  display: flex;
+  justify-content: space-evenly;
+  min-width: 1000px;
+}
+
+body > div {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: 300px;
+  margin: 100px;
+}
+
+.row {
+  display: flex;
+  flex: 1;
+}
+
+.cell {
+  flex: 1;
+}
