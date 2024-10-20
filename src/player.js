@@ -18,4 +18,11 @@ export class Player {
   }
 }
 
-export class ComputerPlayer extends Player {}
+export class ComputerPlayer extends Player {
+  #name;
+
+  constructor() {
+    super();
+    this.#name = "Computer";
+  }
+}
