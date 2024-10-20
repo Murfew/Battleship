@@ -18,7 +18,7 @@ it("returns the initialized ships", () => {
 });
 
 it("places a ship on the gameboard", () => {
-  gameboard.placeShip("destroyer", [0, 0], "N");
+  gameboard.placeShip("destroyer", [0, 0], [0, 1]);
   expect(gameboard.ships[4].coordinates).toStrictEqual([
     [0, 0],
     [0, 1],
@@ -48,4 +48,15 @@ it("returns true when all the ships are sunk", () => {
     }
   }
   expect(gameboard.checkShips()).toBe(true);
+});
+
+it("places longer ships properly", () => {
+  gameboard.placeShip("carrier", [1, 1], [0, 1]);
+  expect(gameboard.ships[0].coordinates).toStrictEqual([
+    [1, 1],
+    [1, 2],
+    [1, 3],
+    [1, 4],
+    [1, 5],
+  ]);
 });

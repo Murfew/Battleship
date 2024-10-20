@@ -8,9 +8,11 @@ const board2 = player2.board;
 
 // Initial Board Population
 for (const obj of board1.ships) {
-  board1.placeShip(obj.name, [board1.ships.indexOf(obj), 0], "N");
+  board1.placeShip(obj.name, [board1.ships.indexOf(obj), 0], [0, 1]);
 }
 
 for (const obj of board2.ships) {
-  board2.placeShip(obj.name, [board2.ships.indexOf(obj), 0], "N");
+  board2.placeShip(obj.name, [board2.ships.indexOf(obj), 0], [0, 1]);
 }
+
+console.log(board1);

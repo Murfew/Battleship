@@ -47,31 +47,11 @@ export class Gameboard {
     }
 
     currentShip.coordinates.push(start);
-
-    switch (direction) {
-      case "N":
-        for (let i = 0; i < currentShip.ship.length - 1; i++) {
-          currentShip.coordinates.push([start[0], start[1] + 1]);
-        }
-        break;
-
-      case "E":
-        for (let i = 0; i < currentShip.ship.length - 1; i++) {
-          currentShip.coordinates.push([start[0] + 1, start[1]]);
-        }
-        break;
-
-      case "S":
-        for (let i = 0; i < currentShip.ship.length - 1; i++) {
-          currentShip.coordinates.push([start[0], start[1] - 1]);
-        }
-        break;
-
-      case "W":
-        for (let i = 0; i < currentShip.ship.length - 1; i++) {
-          currentShip.coordinates.push([start[0] - 1, start[1]]);
-        }
-        break;
+    for (let i = 1; i < currentShip.ship.length; i++) {
+      currentShip.coordinates.push([
+        currentShip.coordinates[i - 1][0] + direction[0],
+        currentShip.coordinates[i - 1][1] + direction[1],
+      ]);
     }
   }
 
