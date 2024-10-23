@@ -19,10 +19,7 @@ export class Player {
 }
 
 export class ComputerPlayer extends Player {
-  #name;
-
   constructor() {
-    super();
-    this.#name = "Computer";
+    super("Computer");
   }
 }

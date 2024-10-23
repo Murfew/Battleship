@@ -10,10 +10,20 @@ const alphabetIndexes = {
   8: "J",
 };
 
+export function initializePage(player, opponent) {
+  const body = document.querySelector("body");
+
+  const playerBoard = document.createElement("div");
+  playerBoard.id = `${player.name}-board`;
+
+  const enemyBoard = document.createElement("div");
+  enemyBoard.id = `${opponent.name}-board`;
+
+  body.append(playerBoard, enemyBoard);
+}
+
 export function renderPlayerBoard(player, isOpponent) {
-  const boardContainer = isOpponent
-    ? document.querySelector("#enemy-board")
-    : document.querySelector("#player-board");
+  const boardContainer = document.querySelector(`#${player.name}-board`);
 
   // reset board
   boardContainer.replaceChildren();
@@ -22,13 +32,16 @@ export function renderPlayerBoard(player, isOpponent) {
   // first row and column for indices
   renderCells(player, boardContainer);
 
-  // TODO render a player's ships
+  // render a player's ships
   if (!isOpponent) {
     renderShips(player);
   }
 
-  // TODO render the misses
+  // render the misses
+  renderMisses(player);
+
   // TODO render the hits
+  renderHits(player);
 }
 
 function renderCells(player, DOMContainer) {
@@ -63,17 +76,47 @@ function renderCells(player, DOMContainer) {
 }
 
 function renderShips(player) {
-  const board = player.board;
+  const ships = player.board.ships;
 
-  for (const obj of board.ships) {
+  for (const obj of ships) {
     const shipCoordinates = obj.coordinates;
 
     for (const pair of shipCoordinates) {
       const cell = document.querySelector(
-        `#player-board [data-col='${pair[0] + 1}'][data-row='${pair[1] + 1}']`
+        `#${player.name}-board [data-col='${pair[0] + 1}'][data-row='${
+          pair[1] + 1
+        }']`
       );
 
       cell.classList.add("ship");
     }
+  }
+}
+
+function renderHits(player) {
+  const hits = player.board.hits;
+
+  for (const pair of hits) {
+    const marker = document.querySelector(
+      `#${player.name}-board [data-col='${pair[0] + 1}'][data-row='${
+        pair[1] + 1
+      }'] .marker`
+    );
+
+    marker.classList.add("hit");
+  }
+}
+
+function renderMisses(player) {
+  const misses = player.board.misses;
+
+  for (const pair of misses) {
+    const marker = document.querySelector(
+      `#${player.name}-board [data-col='${pair[0] + 1}'][data-row='${
+        pair[1] + 1
+      }'] .marker`
+    );
+
+    marker.classList.add("miss");
   }
 }

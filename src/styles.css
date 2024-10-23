@@ -45,3 +45,11 @@ body > div {
 .ship {
   background-color: gray;
 }
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: white;
+}
