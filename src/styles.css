@@ -1,14 +1,13 @@
 body {
   display: flex;
   justify-content: space-evenly;
-  min-width: 1000px;
 }
 
 body > div {
   display: flex;
   flex-direction: column;
   height: 300px;
-  width: 300px;
+  min-width: 300px;
   margin: 100px;
 }
 
@@ -17,11 +16,28 @@ body > div {
   flex: 1;
 }
 
+.index-cell {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .cell {
   flex: 1;
   border: solid 1px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: aqua;
 }
 
 .cell:hover {
   background-color: lightgray;
+}
+
+.hit-or-miss-display {
+  height: 45%;
+  width: 45%;
+  border-radius: 100%;
 }

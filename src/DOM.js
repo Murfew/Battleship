@@ -1,41 +1,51 @@
-export function renderPlayerBoard(player) {
-  const boardContainer = document.getElementById("player-board");
+const alphabetIndexes = {
+  0: "A",
+  1: "B",
+  2: "C",
+  3: "D",
+  4: "E",
+  5: "F",
+  6: "H",
+  7: "I",
+  8: "J",
+};
+
+export function renderPlayerBoard(player, isOpponent) {
+  const boardContainer = isOpponent
+    ? document.querySelector("#enemy-board")
+    : document.querySelector("#player-board");
 
   // reset board
   boardContainer.replaceChildren();
 
   // render the board
-  for (let i = 0; i < player.board.size; i++) {
+  // first row and column for indices
+  for (let i = 0; i < player.board.size + 1; i++) {
     const boardRow = document.createElement("div");
     boardRow.setAttribute("class", "row");
-    boardContainer.appendChild(boardRow);
+    boardContainer.append(boardRow);
 
-    for (let j = 0; j < player.board.size; j++) {
+    for (let j = 0; j < player.board.size + 1; j++) {
       const boardCell = document.createElement("div");
-      boardCell.setAttribute("class", "cell");
-      boardCell.dataset.y = player.board.size - i - 1;
-      boardCell.dataset.x = j;
-      boardRow.appendChild(boardCell);
-    }
-  }
-}
 
-export function renderEnemyBoard(player) {
-  const boardContainer = document.getElementById("enemy-board");
+      if (i === 0 && j !== 0) {
+        boardCell.setAttribute("class", "index-cell");
+        boardCell.textContent = alphabetIndexes[j - 1];
+      } else if (i === 0 && j === 0) {
+        boardCell.setAttribute("class", "index-cell");
+      } else if (i !== 0 && j === 0) {
+        boardCell.setAttribute("class", "index-cell");
+        boardCell.textContent = i;
+      } else {
+        boardCell.setAttribute("class", "cell");
+        boardCell.dataset.row = i;
+        boardCell.dataset.col = j;
+        const hitOrMissDisplay = document.createElement("div");
+        hitOrMissDisplay.setAttribute("class", "hit-or-miss-display");
+        boardCell.append(hitOrMissDisplay);
+      }
 
-  // reset board
-  boardContainer.replaceChildren();
-
-  // render the board
-  for (let i = 0; i < player.board.size; i++) {
-    const boardRow = document.createElement("div");
-    boardRow.setAttribute("class", "row");
-    boardContainer.appendChild(boardRow);
-
-    for (let j = 0; j < player.board.size; j++) {
-      const boardCell = document.createElement("button");
-      boardCell.setAttribute("class", "cell");
-      boardRow.appendChild(boardCell);
+      boardRow.append(boardCell);
     }
   }
 }

@@ -1,5 +1,5 @@
 import { Player, ComputerPlayer } from "./player";
-import { renderPlayerBoard, renderEnemyBoard } from "./DOM";
+import { renderPlayerBoard } from "./DOM";
 import "./styles.css";
 
 const player1 = new Player("Player 1");
@@ -17,5 +17,5 @@ for (const obj of board2.ships) {
   board2.placeShip(obj.name, [board2.ships.indexOf(obj), 0], [0, 1]);
 }
 
-renderPlayerBoard(player1);
-renderEnemyBoard(player2);
+renderPlayerBoard(player1, false);
+renderPlayerBoard(player2, true);

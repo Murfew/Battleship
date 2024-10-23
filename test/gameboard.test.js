@@ -4,7 +4,7 @@ import { Ship } from "../src/ship";
 const gameboard = new Gameboard();
 
 it("returns its size", () => {
-  expect(gameboard.size).toBe(10);
+  expect(gameboard.size).toBe(9);
 });
 
 it("returns the initialized ships", () => {

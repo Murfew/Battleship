@@ -9,7 +9,7 @@ export class Gameboard {
   constructor() {
     this.#misses = [];
     this.#hits = [];
-    this.#size = 10;
+    this.#size = 9;
     this.#ships = [
       { ship: new Ship(5), name: "carrier", coordinates: [] },
       { ship: new Ship(4), name: "battleship", coordinates: [] },
