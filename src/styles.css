@@ -36,8 +36,12 @@ body > div {
   background-color: lightgray;
 }
 
-.hit-or-miss-display {
+.marker {
   height: 45%;
   width: 45%;
   border-radius: 100%;
+}
+
+.ship {
+  background-color: gray;
 }
