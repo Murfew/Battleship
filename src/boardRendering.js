@@ -30,7 +30,7 @@ export function renderPlayerBoard(player, isOpponent) {
 
   // render the cells
   // first row and column for indices
-  renderCells(player, boardContainer);
+  renderCells(player, boardContainer, isOpponent);
 
   // render a player's ships
   if (!isOpponent) {
@@ -40,11 +40,11 @@ export function renderPlayerBoard(player, isOpponent) {
   // render the misses
   renderMisses(player);
 
-  // TODO render the hits
+  // render the hits
   renderHits(player);
 }
 
-function renderCells(player, DOMContainer) {
+function renderCells(player, DOMContainer, isOpponent) {
   for (let i = 0; i < player.board.size + 1; i++) {
     const boardRow = document.createElement("div");
     boardRow.setAttribute("class", "row");
@@ -53,6 +53,7 @@ function renderCells(player, DOMContainer) {
     for (let j = 0; j < player.board.size + 1; j++) {
       const boardCell = document.createElement("div");
 
+      // add markers
       if (i === 0 && j !== 0) {
         boardCell.setAttribute("class", "index-cell");
         boardCell.textContent = alphabetIndexes[j - 1];

@@ -1,5 +1,5 @@
 import { Player, ComputerPlayer } from "./player";
-import { initializePage, renderPlayerBoard } from "./DOM";
+import { initializePage, renderPlayerBoard } from "./boardRendering";
 import "./styles.css";
 
 const player1 = new Player("Player1");

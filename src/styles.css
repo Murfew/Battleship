@@ -32,8 +32,8 @@ body > div {
   background-color: aqua;
 }
 
-.cell:hover {
-  background-color: lightgray;
+body > div:last-child .cell:hover {
+  background-color: rgba(0, 255, 255, 0.4);
 }
 
 .marker {
