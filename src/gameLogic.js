@@ -10,8 +10,8 @@ export async function playGame(player1, player2) {
   const players = [player1, player2];
 
   while (true) {
-    let turnPlayer = players[turnCounter % 2];
-    let opponent = players[(turnCounter + 1) % 2];
+    const turnPlayer = players[turnCounter % 2];
+    const opponent = players[(turnCounter + 1) % 2];
 
     initializePage(turnPlayer, opponent);
 
@@ -26,20 +26,17 @@ export async function playGame(player1, player2) {
     attack(cellClickEvent, opponent);
 
     // check for a loss
+    if (opponent.board.checkShips()) {
+      alert(`Game over! ${turnPlayer.name} wins!`);
+      break;
+    }
 
     // Flip the turn
     turnCounter++;
   }
 }
 
-function checkLoss() {}
-
 function attack(event, player) {
-  // add a marker the the clicked cell to show a miss or a hit
-
-  // make the cell's hover effect disappear
-  event.target.classList.remove("clickable");
-
   // Get the coordinates of where the click happened
   const x = event.target.dataset.col;
   const y = event.target.dataset.row;
@@ -47,7 +44,7 @@ function attack(event, player) {
   // send the attack through
   player.board.receiveAttack([x - 1, y - 1]);
 
-  // re-render the board that received the attack
+  // render opponent board after attack
   renderHits(player);
   renderMisses(player);
 }

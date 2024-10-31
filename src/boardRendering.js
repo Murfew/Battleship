@@ -14,13 +14,21 @@ export function initializePage(player, opponent) {
   const body = document.querySelector("body");
   body.replaceChildren();
 
+  const turnPlayerDisplay = document.createElement("h1");
+  turnPlayerDisplay.textContent = `${player.name}'s turn`;
+
+  const boards = document.createElement("div");
+  boards.id = "boards";
+
   const playerBoard = document.createElement("div");
   playerBoard.id = `${player.name}-board`;
 
   const enemyBoard = document.createElement("div");
   enemyBoard.id = `${opponent.name}-board`;
 
-  body.append(playerBoard, enemyBoard);
+  boards.append(playerBoard, enemyBoard);
+
+  body.append(turnPlayerDisplay, boards);
 }
 
 export function renderPlayerBoard(player, isOpponent) {
@@ -53,7 +61,6 @@ function renderCells(player, DOMContainer, isOpponent) {
 
     for (let j = 0; j < player.board.size + 1; j++) {
       const boardCell = document.createElement("div");
-      boardCell.classList.add("clickable");
 
       // differentiate between cells that mark the indices vs cells that will contain gameplay
       if (i === 0 && j !== 0) {
@@ -68,6 +75,7 @@ function renderCells(player, DOMContainer, isOpponent) {
         boardCell.classList.add("cell");
         boardCell.dataset.row = i;
         boardCell.dataset.col = j;
+        boardCell.classList.add("clickable");
       }
 
       boardRow.append(boardCell);
@@ -103,6 +111,9 @@ export function renderHits(player) {
       }']`
     );
 
+    // make the cell's hover effect disappear
+    cell.classList.remove("clickable");
+
     // add hit marker
     if (cell.childElementCount === 0) {
       const marker = document.createElement("div");
@@ -122,6 +133,9 @@ export function renderMisses(player) {
         coordinate[1] + 1
       }']`
     );
+
+    // make the cell's hover effect disappear
+    cell.classList.remove("clickable");
 
     // add miss marker
     if (cell.childElementCount === 0) {

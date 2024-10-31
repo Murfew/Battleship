@@ -1,14 +1,24 @@
 body {
   display: flex;
+  flex-direction: column;
   justify-content: space-evenly;
 }
 
-body > div {
+#boards {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+#boards > div {
   display: flex;
   flex-direction: column;
   height: 300px;
   min-width: 300px;
   margin: 100px;
+}
+
+h1 {
+  text-align: center;
 }
 
 .row {
