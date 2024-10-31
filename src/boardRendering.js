@@ -47,28 +47,44 @@ export function renderPlayerBoard(player, isOpponent) {
 function renderCells(player, DOMContainer, isOpponent) {
   for (let i = 0; i < player.board.size + 1; i++) {
     const boardRow = document.createElement("div");
-    boardRow.setAttribute("class", "row");
+    boardRow.classList.add("row");
     DOMContainer.append(boardRow);
 
     for (let j = 0; j < player.board.size + 1; j++) {
       const boardCell = document.createElement("div");
+      boardCell.classList.add("clickable");
 
-      // add markers
+      // add click to attack only on opponent board
+      if (isOpponent) {
+        boardCell.addEventListener(
+          "click",
+          (e) => {
+            attack(e, player);
+          },
+          { once: true }
+        );
+      }
+
+      // differentiate between cells that mark the indices vs cells that will contain gameplay
       if (i === 0 && j !== 0) {
-        boardCell.setAttribute("class", "index-cell");
+        boardCell.classList.add("index-cell");
         boardCell.textContent = alphabetIndexes[j - 1];
       } else if (i === 0 && j === 0) {
-        boardCell.setAttribute("class", "index-cell");
+        boardCell.classList.add("index-cell");
       } else if (i !== 0 && j === 0) {
-        boardCell.setAttribute("class", "index-cell");
+        boardCell.classList.add("index-cell");
         boardCell.textContent = i;
       } else {
-        boardCell.setAttribute("class", "cell");
+        boardCell.classList.add("cell");
         boardCell.dataset.row = i;
         boardCell.dataset.col = j;
-        const marker = document.createElement("div");
-        marker.setAttribute("class", "marker");
-        boardCell.append(marker);
+
+        // add markers only to the current player board, otherwise messes up clicks on opponent board
+        if (!isOpponent) {
+          const marker = document.createElement("div");
+          marker.classList.add("marker");
+          boardCell.append(marker);
+        }
       }
 
       boardRow.append(boardCell);
@@ -97,10 +113,10 @@ function renderShips(player) {
 function renderHits(player) {
   const hits = player.board.hits;
 
-  for (const pair of hits) {
+  for (const coordinate of hits) {
     const marker = document.querySelector(
-      `#${player.name}-board [data-col='${pair[0] + 1}'][data-row='${
-        pair[1] + 1
+      `#${player.name}-board [data-col='${coordinate[0] + 1}'][data-row='${
+        coordinate[1] + 1
       }'] .marker`
     );
 
@@ -111,13 +127,33 @@ function renderHits(player) {
 function renderMisses(player) {
   const misses = player.board.misses;
 
-  for (const pair of misses) {
+  for (const coordinate of misses) {
     const marker = document.querySelector(
-      `#${player.name}-board [data-col='${pair[0] + 1}'][data-row='${
-        pair[1] + 1
+      `#${player.name}-board [data-col='${coordinate[0] + 1}'][data-row='${
+        coordinate[1] + 1
       }'] .marker`
     );
-
     marker.classList.add("miss");
   }
+}
+
+function attack(event, player) {
+  // add a marker the the clicked cell to show a miss or a hit
+  const marker = document.createElement("div");
+  marker.classList.add("marker");
+  event.target.append(marker);
+
+  // make the cell's hover effect disappear
+  event.target.classList.remove("clickable");
+
+  // Get the coordinates of where the click happened
+  const x = event.target.dataset.col;
+  const y = event.target.dataset.row;
+
+  // send the attack through
+  player.board.receiveAttack([x - 1, y - 1]);
+
+  // re-render the board that received the attack
+  renderHits(player);
+  renderMisses(player);
 }

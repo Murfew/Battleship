@@ -35,7 +35,6 @@ export class Gameboard {
     return this.#hits;
   }
 
-  // TODO input validation
   placeShip(name, start, direction) {
     let currentShip;
 
