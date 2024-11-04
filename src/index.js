@@ -4,10 +4,12 @@ import "./styles.css";
 import { playGame } from "./gameLogic";
 
 // Player initialization
+// TODO game choice (human or computer)
 const player1 = new Player("Player1");
 const player2 = new ComputerPlayer();
 
-// TODO place ships
+// TODO allow players to place ships (coordinate entries, random, drag and drop)
+// TODO announce sinking of ship (dialog?)
 // Initial Board Population (TEST)
 const board1 = player1.board;
 const board2 = player2.board;

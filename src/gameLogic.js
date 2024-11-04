@@ -5,6 +5,10 @@ import {
   renderPlayerBoard,
 } from "./boardRendering";
 
+// TODO computer game loop vs human game loop
+// TODO computer logic (random, choose adjacent square to hit until sink)
+// TODO Game over screen
+
 export async function playGame(player1, player2) {
   let turnCounter = 0;
   const players = [player1, player2];
@@ -31,9 +35,33 @@ export async function playGame(player1, player2) {
       break;
     }
 
+    // Ask player to turn screen to opponent
+    flipScreen();
+    await new Promise((r) => setTimeout(r, 10000));
+
     // Flip the turn
     turnCounter++;
   }
+}
+
+function flipScreen() {
+  // TODO Create a modal that asks the user to confirm once the screen has been flipped
+  const body = document.querySelector("body");
+
+  const modal = document.createElement("dialog");
+  body.append(modal);
+
+  const modalText = document.createElement("div");
+  modalText.textContent = "Please turn the screen to the other player";
+
+  const continueButton = document.createElement("button");
+  continueButton.textContent = "Continue";
+  continueButton.addEventListener("click", (modal) => {
+    modal.close();
+  });
+
+  modal.append(modalText, continueButton);
+  modal.show();
 }
 
 function attack(event, player) {
