@@ -24,7 +24,10 @@ export async function playGame(player1, player2) {
 
     // wait for a legal click
     const clickableCells = document.querySelectorAll(".cell.clickable");
-    const cellClickEvent = await waitForEvent(clickableCells, "click");
+    const cellClickEvent = await waitForEventOnMultipleElements(
+      clickableCells,
+      "click"
+    );
 
     // process the attack
     attack(cellClickEvent, opponent);
@@ -36,19 +39,19 @@ export async function playGame(player1, player2) {
     }
 
     // Ask player to turn screen to opponent
-    flipScreen();
-    await new Promise((r) => setTimeout(r, 10000));
+    await flipScreen();
 
     // Flip the turn
     turnCounter++;
   }
 }
 
-function flipScreen() {
-  // TODO Create a modal that asks the user to confirm once the screen has been flipped
+async function flipScreen() {
+  // Create a modal that asks the user to confirm once the screen has been flipped
   const body = document.querySelector("body");
 
   const modal = document.createElement("dialog");
+  modal.id = "flip";
   body.append(modal);
 
   const modalText = document.createElement("div");
@@ -56,12 +59,15 @@ function flipScreen() {
 
   const continueButton = document.createElement("button");
   continueButton.textContent = "Continue";
-  continueButton.addEventListener("click", (modal) => {
+  continueButton.autofocus = true;
+  continueButton.addEventListener("click", () => {
     modal.close();
   });
 
   modal.append(modalText, continueButton);
-  modal.show();
+  modal.showModal();
+
+  await waitForEventOnSingularElement(continueButton, "click");
 }
 
 function attack(event, player) {
@@ -77,12 +83,20 @@ function attack(event, player) {
   renderMisses(player);
 }
 
-function waitForEvent(elements, eventType) {
+function waitForEventOnMultipleElements(elements, eventType) {
   return new Promise((resolve) => {
     elements.forEach((element) => {
       element.addEventListener(eventType, (event) => resolve(event), {
         once: true,
       });
+    });
+  });
+}
+
+function waitForEventOnSingularElement(element, eventType) {
+  return new Promise((resolve) => {
+    element.addEventListener(eventType, (event) => resolve(event), {
+      once: true,
     });
   });
 }

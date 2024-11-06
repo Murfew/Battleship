@@ -63,3 +63,30 @@ body > div:last-child .cell.clickable:hover {
 .miss {
   background-color: white;
 }
+
+#flip {
+  border-radius: 10px;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 3rem 1rem 3rem;
+  font-size: 1.5rem;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#flip button {
+  width: fit-content;
+  font-size: 1.25rem;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+#flip button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+#flip::backdrop {
+  backdrop-filter: blur(5px);
+}
