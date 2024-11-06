@@ -35,15 +35,24 @@ export class Gameboard {
     return this.#hits;
   }
 
-  placeShip(name, start, direction) {
-    let currentShip;
+  addMiss(coordinates) {
+    this.#misses.push(coordinates);
+  }
 
+  addHit(coordinates) {
+    this.#hits.push(coordinates);
+  }
+
+  getShip(name) {
     for (let i = 0; i < this.#ships.length; i++) {
       if (this.#ships[i].name == name) {
-        currentShip = this.#ships[i];
-        break;
+        return this.#ships[i];
       }
     }
+  }
+
+  placeShip(name, start, direction) {
+    let currentShip = this.getShip(name);
 
     currentShip.coordinates.push(start);
     for (let i = 1; i < currentShip.ship.length; i++) {
@@ -58,19 +67,24 @@ export class Gameboard {
     return a.toString() === b.toString();
   }
 
-  receiveAttack(coordinates) {
-    // see if coordinates belong to a ship
+  checkOverlap(coordinates) {
     for (const ship of this.#ships) {
       for (const coordinate of ship.coordinates) {
-        if (this.#compareArrays(coordinate, coordinates)) {
-          this.#hits.push(coordinates);
-          ship.ship.hit();
-          return;
-        }
+        return [this.#compareArrays(coordinate, coordinates), ship];
       }
     }
+  }
 
-    this.#misses.push(coordinates);
+  receiveAttack(coordinates) {
+    const [overlap, ship] = this.checkOverlap(coordinates);
+
+    if (overlap) {
+      this.addHit(coordinates);
+      ship.ship.hit();
+      return;
+    }
+
+    this.addMiss(coordinates);
   }
 
   checkShips() {

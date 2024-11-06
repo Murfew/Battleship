@@ -4,14 +4,16 @@ import {
   renderMisses,
   renderPlayerBoard,
 } from "./boardRendering";
+import { ComputerPlayer } from "./player";
 
-// TODO computer game loop vs human game loop
-// TODO computer logic (random, choose adjacent square to hit until sink)
-// TODO Game over screen
+// TODO computer logic (choose adjacent square to hit until sink)
 
 export async function playGame(player1, player2) {
   let turnCounter = 0;
   const players = [player1, player2];
+
+  randomGameSetup(player1);
+  randomGameSetup(player2);
 
   while (true) {
     const turnPlayer = players[turnCounter % 2];
@@ -38,11 +40,19 @@ export async function playGame(player1, player2) {
       break;
     }
 
-    // Ask player to turn screen to opponent
-    await flipScreen();
+    if (player2 instanceof ComputerPlayer) {
+      // Human vs. Computer
+      const computerRandomMove = getRandomCoords();
+      player1.board.receiveAttack(computerRandomMove);
+    } else {
+      // Human vs. Human
 
-    // Flip the turn
-    turnCounter++;
+      // Ask player to turn screen to opponent
+      await flipScreen();
+
+      // Flip the turn
+      turnCounter++;
+    }
   }
 }
 
@@ -57,9 +67,9 @@ function showGameOver(winner) {
   modalText.textContent = `Game Over! ${winner.name} wins!`;
 
   const playAgainButton = document.createElement("button");
-  closeButton.textContent = "Play Again";
-  closeButton.autofocus = true;
-  closeButton.addEventListener("click", () => {
+  playAgainButton.textContent = "Play Again";
+  playAgainButton.autofocus = true;
+  playAgainButton.addEventListener("click", () => {
     modal.close();
     // TODO go to start/play again screen
   });
@@ -128,3 +138,45 @@ function waitForEventOnSingularElement(element, eventType) {
     });
   });
 }
+
+function getRandomCoords() {
+  const xValue = Math.floor(Math.random() * 9);
+  const yValue = Math.floor(Math.random() * 9);
+
+  return [xValue, yValue];
+}
+
+function getRandomDirection() {
+  const choice = Math.floor(Math.random() * 2);
+  if (choice === 1) {
+    return [0, 1];
+  } else {
+    return [1, 0];
+  }
+}
+
+function validateMove(player, shipName, start, direction) {
+  const shipLength = player.board.getShip(shipName).ship.length;
+
+  for (let i = 0; i < shipLength; i++) {
+    const tentativeX = start[0] + direction[0] * i;
+    const tentativeY = start[1] + direction[1] * i;
+
+    const overlap = player.board.checkOverlap([tentativeX, tentativeY])[0];
+
+    // check out of bounds
+    if (tentativeX > player.board.size || tentativeY > player.board.size) {
+      return false;
+    }
+
+    // check overlap
+    if (overlap) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// TODO
+function randomGameSetup(player) {}

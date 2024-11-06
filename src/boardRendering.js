@@ -75,7 +75,10 @@ function renderCells(player, DOMContainer, isOpponent) {
         boardCell.classList.add("cell");
         boardCell.dataset.row = i;
         boardCell.dataset.col = j;
-        boardCell.classList.add("clickable");
+
+        if (isOpponent) {
+          boardCell.classList.add("clickable");
+        }
       }
 
       boardRow.append(boardCell);
