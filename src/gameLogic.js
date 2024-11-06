@@ -34,7 +34,7 @@ export async function playGame(player1, player2) {
 
     // check for a loss
     if (opponent.board.checkShips()) {
-      alert(`Game over! ${turnPlayer.name} wins!`);
+      showGameOver(turnPlayer);
       break;
     }
 
@@ -44,6 +44,34 @@ export async function playGame(player1, player2) {
     // Flip the turn
     turnCounter++;
   }
+}
+
+function showGameOver(winner) {
+  const body = document.querySelector("body");
+
+  const modal = document.createElement("dialog");
+  modal.id = "gameOver";
+  body.append(modal);
+
+  const modalText = document.createElement("div");
+  modalText.textContent = `Game Over! ${winner.name} wins!`;
+
+  const playAgainButton = document.createElement("button");
+  closeButton.textContent = "Play Again";
+  closeButton.autofocus = true;
+  closeButton.addEventListener("click", () => {
+    modal.close();
+    // TODO go to start/play again screen
+  });
+
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "Close";
+  closeButton.addEventListener("click", () => {
+    close();
+  });
+
+  modal.append(modalText, playAgainButton, closeButton);
+  modal.showModal();
 }
 
 async function flipScreen() {

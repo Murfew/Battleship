@@ -64,7 +64,7 @@ body > div:last-child .cell.clickable:hover {
   background-color: white;
 }
 
-#flip {
+dialog {
   border-radius: 10px;
   height: 10rem;
   display: flex;
@@ -75,18 +75,18 @@ body > div:last-child .cell.clickable:hover {
   justify-content: space-around;
 }
 
-#flip button {
+dialog button {
   width: fit-content;
   font-size: 1.25rem;
   border-radius: 5px;
   padding: 5px;
 }
 
-#flip button:hover {
+dialog button:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.15);
 }
 
-#flip::backdrop {
+dialog::backdrop {
   backdrop-filter: blur(5px);
 }

@@ -4,7 +4,7 @@ import "./styles.css";
 import { playGame } from "./gameLogic";
 
 // Player initialization
-// TODO game choice (human or computer)
+// TODO game choice (human or computer) (start screen)
 const player1 = new Player("Player1");
 const player2 = new ComputerPlayer();
 
