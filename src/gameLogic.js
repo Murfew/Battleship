@@ -149,34 +149,27 @@ function getRandomCoords() {
 function getRandomDirection() {
   const choice = Math.floor(Math.random() * 2);
   if (choice === 1) {
+    // Downwards
     return [0, 1];
   } else {
+    // Right
     return [1, 0];
   }
 }
 
-function validateMove(player, shipName, start, direction) {
-  const shipLength = player.board.getShip(shipName).ship.length;
+function randomGameSetup(player) {
+  for (const obj of player.board.ships) {
+    // Generate random move
+    let testStart;
+    let testDirection;
 
-  for (let i = 0; i < shipLength; i++) {
-    const tentativeX = start[0] + direction[0] * i;
-    const tentativeY = start[1] + direction[1] * i;
+    do {
+      testStart = getRandomCoords();
+      testDirection = getRandomDirection();
+    } while (
+      !player.board.checkShipIsValid(obj.name, testStart, testDirection)
+    );
 
-    const overlap = player.board.checkOverlap([tentativeX, tentativeY])[0];
-
-    // check out of bounds
-    if (tentativeX > player.board.size || tentativeY > player.board.size) {
-      return false;
-    }
-
-    // check overlap
-    if (overlap) {
-      return false;
-    }
+    player.board.placeShip(obj.name, testStart, testDirection);
   }
-
-  return true;
 }
-
-// TODO
-function randomGameSetup(player) {}

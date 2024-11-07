@@ -67,16 +67,20 @@ export class Gameboard {
     return a.toString() === b.toString();
   }
 
-  checkOverlap(coordinates) {
+  #checkOverlap(coordinates) {
     for (const ship of this.#ships) {
       for (const coordinate of ship.coordinates) {
-        return [this.#compareArrays(coordinate, coordinates), ship];
+        if (this.#compareArrays(coordinate, coordinates)) {
+          return [true, ship];
+        }
       }
     }
+
+    return [false, null];
   }
 
   receiveAttack(coordinates) {
-    const [overlap, ship] = this.checkOverlap(coordinates);
+    const [overlap, ship] = this.#checkOverlap(coordinates);
 
     if (overlap) {
       this.addHit(coordinates);
@@ -93,6 +97,26 @@ export class Gameboard {
         return false;
       }
     }
+    return true;
+  }
+
+  checkShipIsValid(name, start, direction) {
+    const shipLength = this.getShip(name).ship.length;
+
+    for (let i = 0; i < shipLength; i++) {
+      const testX = start[0] + direction[0] * i;
+      const testY = start[1] + direction[1] * i;
+
+      console.log(testX, testX >= this.#size, testY, testY >= this.#size);
+      if (testX >= this.#size || testY >= this.#size) {
+        return false;
+      }
+
+      if (this.#checkOverlap([testX, testY])[0]) {
+        return false;
+      }
+    }
+
     return true;
   }
 }
