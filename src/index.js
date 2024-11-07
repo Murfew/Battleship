@@ -9,7 +9,6 @@ const player1 = new Player("Player1");
 const player2 = new ComputerPlayer();
 
 // TODO allow players to place ships (coordinate entries, random, drag and drop)
-// TODO announce sinking of ship (dialog?)
 
 // Game loop
 playGame(player1, player2);

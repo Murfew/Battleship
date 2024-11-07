@@ -6,8 +6,6 @@ import {
 } from "./boardRendering";
 import { ComputerPlayer } from "./player";
 
-// TODO computer logic (choose adjacent square to hit until sink)
-
 export async function playGame(player1, player2) {
   let turnCounter = 0;
   const players = [player1, player2];
@@ -31,11 +29,18 @@ export async function playGame(player1, player2) {
       "click"
     );
 
+    const numberOfSunkShipsBefore = opponent.board.checkShips();
     // process the attack
     attack(cellClickEvent, opponent);
+    const numberOfSunkShipsAfter = opponent.board.checkShips();
+
+    // announce sinking of ship
+    if (numberOfSunkShipsAfter !== numberOfSunkShipsBefore) {
+      await announceSunk();
+    }
 
     // check for a loss
-    if (opponent.board.checkShips()) {
+    if (opponent.board.checkShips() === 5) {
       showGameOver(turnPlayer);
       break;
     }
@@ -61,6 +66,29 @@ export async function playGame(player1, player2) {
       turnCounter++;
     }
   }
+}
+
+async function announceSunk() {
+  const body = document.querySelector("body");
+
+  const modal = document.createElement("dialog");
+  modal.id = "sunkShip";
+  body.append(modal);
+
+  const modalText = document.createElement("div");
+  modalText.textContent = "Congratulations, you sunk a ship!";
+
+  const continueButton = document.createElement("button");
+  continueButton.textContent = "Continue";
+  continueButton.autofocus = true;
+  continueButton.addEventListener("click", () => {
+    modal.close();
+  });
+
+  modal.append(modalText, continueButton);
+  modal.showModal();
+
+  await waitForEventOnSingularElement(continueButton, "click");
 }
 
 function showGameOver(winner) {

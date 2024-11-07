@@ -92,12 +92,13 @@ export class Gameboard {
   }
 
   checkShips() {
+    let numberOfSunk = 0;
     for (const obj of this.#ships) {
       if (!obj.ship.isSunk()) {
-        return false;
+        numberOfSunk++;
       }
     }
-    return true;
+    return numberOfSunk;
   }
 
   checkShipIsValid(name, start, direction) {
