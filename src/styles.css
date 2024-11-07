@@ -64,7 +64,7 @@ body > div:last-child .cell.clickable:hover {
   background-color: white;
 }
 
-dialog {
+dialog[open] {
   border-radius: 10px;
   height: 10rem;
   display: flex;

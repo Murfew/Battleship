@@ -63,14 +63,14 @@ export class Gameboard {
     }
   }
 
-  #compareArrays(a, b) {
+  compareArrays(a, b) {
     return a.toString() === b.toString();
   }
 
   #checkOverlap(coordinates) {
     for (const ship of this.#ships) {
       for (const coordinate of ship.coordinates) {
-        if (this.#compareArrays(coordinate, coordinates)) {
+        if (this.compareArrays(coordinate, coordinates)) {
           return [true, ship];
         }
       }
@@ -107,7 +107,6 @@ export class Gameboard {
       const testX = start[0] + direction[0] * i;
       const testY = start[1] + direction[1] * i;
 
-      console.log(testX, testX >= this.#size, testY, testY >= this.#size);
       if (testX >= this.#size || testY >= this.#size) {
         return false;
       }

@@ -42,8 +42,15 @@ export async function playGame(player1, player2) {
 
     if (player2 instanceof ComputerPlayer) {
       // Human vs. Computer
-      const computerRandomMove = getRandomCoords();
-      player1.board.receiveAttack(computerRandomMove);
+      const numberHitsBeforeMove = player1.board.hits.length;
+      const computerMove = player2.makeMove();
+      player1.board.receiveAttack(computerMove);
+      const numberHitsAfterMove = player1.board.hits.length;
+
+      // If the move was a hit, add the adjacent cells to be tried next
+      if (numberHitsAfterMove !== numberHitsBeforeMove) {
+        player2.addAdjacentMoves(computerMove);
+      }
     } else {
       // Human vs. Human
 
@@ -139,7 +146,7 @@ function waitForEventOnSingularElement(element, eventType) {
   });
 }
 
-function getRandomCoords() {
+export function getRandomCoords() {
   const xValue = Math.floor(Math.random() * 9);
   const yValue = Math.floor(Math.random() * 9);
 
