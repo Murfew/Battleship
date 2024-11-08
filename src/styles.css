@@ -90,3 +90,7 @@ dialog button:hover {
 dialog::backdrop {
   backdrop-filter: blur(5px);
 }
+
+#info {
+  display: none;
+}
