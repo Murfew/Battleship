@@ -17,6 +17,12 @@ export async function playGame(player1, player2) {
   let turnCounter = 0;
   const players = [player1, player2];
 
+  // TODO allow players to place ships (coordinate entries, random button, drag and drop)
+
+  // Place ships
+  player1.board.randomShipSetup();
+  player2.board.randomShipSetup();
+
   // Game loop until loss
   while (true) {
     // Determine who the current player and the opponent is
@@ -51,7 +57,7 @@ export async function playGame(player1, player2) {
 
     // Stop game and announce winner if the player won
     if (opponent.board.checkShips() === 5) {
-      showGameOver(turnPlayer);
+      showGameOver(turnPlayer, opponent);
       break;
     }
 

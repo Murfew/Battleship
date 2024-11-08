@@ -91,6 +91,10 @@ dialog::backdrop {
   backdrop-filter: blur(5px);
 }
 
-#info {
+.hide {
   display: none;
+}
+
+button.selected {
+  background-color: rgba(0, 0, 0, 0.15);
 }

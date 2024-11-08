@@ -142,7 +142,7 @@ export class Gameboard {
   checkShips() {
     let numberOfSunk = 0;
     for (const obj of this.#ships) {
-      if (!obj.ship.isSunk()) {
+      if (obj.ship.isSunk()) {
         numberOfSunk++;
       }
     }

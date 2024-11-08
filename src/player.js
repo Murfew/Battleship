@@ -1,5 +1,5 @@
 import { Gameboard } from "./gameboard";
-import { getRandomCoords } from "./game";
+import { compareArrays, getRandomCoords } from "./utils";
 
 /**
  * Class that represents a player
@@ -82,7 +82,7 @@ export class ComputerPlayer extends Player {
    */
   checkIfMoveAlreadyMade(move) {
     for (const previous of this.#previousMoves) {
-      if (this.board.compareArrays(previous, move)) {
+      if (compareArrays(previous, move)) {
         return true;
       }
     }

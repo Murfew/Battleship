@@ -1,4 +1,5 @@
-import { Player } from "./player";
+import { playGame } from "./game";
+import { ComputerPlayer, Player } from "./player";
 
 /**
  * Resets the current HTML and add the containers for the players boards, and displays the turn player's name
@@ -10,10 +11,10 @@ export function initializePage(player, opponent) {
   turnPlayerDisplay.textContent = `${player.name}'s turn`;
 
   const playerBoard = document.createElement("div");
-  playerBoard.id = `${player.name}-board`;
+  playerBoard.id = `${player.name.replace(" ", "-")}-board`;
 
   const enemyBoard = document.createElement("div");
-  enemyBoard.id = `${opponent.name}-board`;
+  enemyBoard.id = `${opponent.name.replace(" ", "-")}-board`;
 
   const boards = document.createElement("div");
   boards.id = "boards";
@@ -31,7 +32,9 @@ export function initializePage(player, opponent) {
  * @param {Boolean} isOpponent Flag for determining whether this is the player's opponent's board or theirs
  */
 export function renderPlayerBoard(player, isOpponent) {
-  const boardContainer = document.querySelector(`#${player.name}-board`);
+  const boardContainer = document.querySelector(
+    `#${player.name.replace(" ", "-")}-board`
+  );
 
   // Clear the board
   boardContainer.replaceChildren();
@@ -122,9 +125,9 @@ function renderShips(player) {
 
     for (const pair of shipCoordinates) {
       const cell = document.querySelector(
-        `#${player.name}-board [data-col='${pair[0] + 1}'][data-row='${
-          pair[1] + 1
-        }']`
+        `#${player.name.replace(" ", "-")}-board [data-col='${
+          pair[0] + 1
+        }'][data-row='${pair[1] + 1}']`
       );
 
       cell.classList.add("ship");
@@ -141,9 +144,9 @@ function renderHits(player) {
 
   for (const coordinate of hits) {
     const cell = document.querySelector(
-      `#${player.name}-board [data-col='${coordinate[0] + 1}'][data-row='${
-        coordinate[1] + 1
-      }']`
+      `#${player.name.replace(" ", "-")}-board [data-col='${
+        coordinate[0] + 1
+      }'][data-row='${coordinate[1] + 1}']`
     );
 
     // Make the cell's hover effect disappear, since it is no longer a valid move
@@ -168,9 +171,9 @@ function renderMisses(player) {
 
   for (const coordinate of misses) {
     const cell = document.querySelector(
-      `#${player.name}-board [data-col='${coordinate[0] + 1}'][data-row='${
-        coordinate[1] + 1
-      }']`
+      `#${player.name.replace(" ", "-")}-board [data-col='${
+        coordinate[0] + 1
+      }'][data-row='${coordinate[1] + 1}']`
     );
 
     // Make the cell's hover effect disappear, since it is no longer a valid move
@@ -186,57 +189,86 @@ function renderMisses(player) {
   }
 }
 
-// TODO return both player objects, ship placements
-// TODO allow players to place ships (coordinate entries, random, drag and drop)
+// TODO Add title/welcome
 /**
  * Renders a modal that asks the player if they wish to play against the computer or another person.
  * Then takes in the username(s) of the player(s) and starts the game.
  */
 export async function setupGame() {
   // Section for Player 1 to enter their username
-  const player1Info = document.createElement("div");
-  player1Info.id = "player1Info";
-  const player1NameLabel = document.createElement("label");
   const player1NameInput = document.createElement("input");
   player1NameInput.id = "player1Name";
+  player1NameInput.placeholder = "Type name here...";
+  const player1NameLabel = document.createElement("label");
   player1NameLabel.htmlFor = "player1Name";
   player1NameLabel.textContent = "Player 1 Name";
+  const player1Info = document.createElement("div");
+  player1Info.id = "player1Info";
   player1Info.append(player1NameLabel, player1NameInput);
 
   // Section for Player 2 to enter their username
-  const player2Info = document.createElement("div");
-  player2Info.id = "player2Info";
-  const player2NameLabel = document.createElement("label");
   const player2NameInput = document.createElement("input");
   player2NameInput.id = "player2Name";
+  player2NameInput.placeholder = "Type name here...";
+  const player2NameLabel = document.createElement("label");
   player2NameLabel.htmlFor = "player2Name";
   player2NameLabel.textContent = "Player 2 Name";
+  const player2Info = document.createElement("div");
+  player2Info.id = "player2Info";
   player2Info.append(player2NameLabel, player2NameInput);
-
-  // Button to launch the game once setup complete
-  const playButton = document.createElement("button");
-  playButton.textContent = "Play!";
-  playButton.addEventListener("click", () => {
-    // TODO play game
-  });
 
   // Container to hold the Player 1 and Player 2 information
   const playerInfoContainer = document.createElement("div");
-  playerInfoContainer.id = "info";
-  playerInfoContainer.append(player1Info, player2Info, playButton);
+  playerInfoContainer.classList.add("hide");
+  playerInfoContainer.append(player1Info, player2Info);
 
   // Button to choose to play against the computer
   const computerGameButton = document.createElement("button");
   computerGameButton.textContent = "Singleplayer";
   computerGameButton.addEventListener("click", () => {
-    // TODO continue setup for computer game
+    computerGameButton.classList.add("selected");
+    humanGameButton.classList.remove("selected");
+
+    playerInfoContainer.classList.remove("hide");
+    player2Info.classList.add("hide");
+
+    // Button to launch the game once setup complete
+    const playButton = document.createElement("button");
+    playButton.id = "playButton";
+    playButton.textContent = "Play!";
+    playButton.addEventListener("click", () => {
+      const player1 = new Player(player1NameInput.value || "Player 1");
+      const player2 = new ComputerPlayer();
+      playGame(player1, player2);
+    });
+    if (!document.querySelector("#playButton")) {
+      playerInfoContainer.append(playButton);
+    }
   });
 
   // Button to choose to play against human
   const humanGameButton = document.createElement("button");
   humanGameButton.textContent = "Multiplayer";
   humanGameButton.addEventListener("click", () => {
-    // TODO continue setup for human game
+    humanGameButton.classList.add("selected");
+    computerGameButton.classList.remove("selected");
+
+    playerInfoContainer.classList.remove("hide");
+    player2Info.classList.remove("hide");
+
+    // Button to launch the game once setup complete
+    const playButton = document.createElement("button");
+    playButton.id = "playButton";
+    playButton.textContent = "Play!";
+    playButton.addEventListener("click", () => {
+      const player1 = new Player(player1NameInput.value || "Player 1");
+      const player2 = new Player(player2NameInput.value || "Player 2");
+      playGame(player1, player2);
+    });
+
+    if (!document.querySelector("#playButton")) {
+      playerInfoContainer.append(playButton);
+    }
   });
 
   // Initialize the setup modal
@@ -279,8 +311,9 @@ export async function announceSunk() {
 /**
  * Announces via a modal which player just won the game. Asks the players if they would like to play again or quit the game.
  * @param {Player} winner The player who won the game
+ * @param {Player} opponent THe player who lost the game
  */
-export function showGameOver(winner) {
+export function showGameOver(winner, opponent) {
   const modalText = document.createElement("div");
   modalText.textContent = `Game Over! ${winner.name} wins!`;
 
@@ -289,14 +322,14 @@ export function showGameOver(winner) {
   playAgainButton.autofocus = true;
   playAgainButton.addEventListener("click", () => {
     modal.close();
-    // TODO launch new game with same players
+    playGame(winner, loser);
   });
 
   const closeButton = document.createElement("button");
   closeButton.textContent = "Close";
   closeButton.addEventListener("click", () => {
     modal.close();
-    // TODO go back to home screen for setup
+    setupGame();
   });
 
   const modal = document.createElement("dialog");
