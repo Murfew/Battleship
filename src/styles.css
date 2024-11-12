@@ -73,6 +73,7 @@ dialog[open] {
   font-size: 1.5rem;
   align-items: center;
   justify-content: space-around;
+  overflow: hidden;
 }
 
 dialog button {
@@ -91,10 +92,45 @@ dialog::backdrop {
   backdrop-filter: blur(5px);
 }
 
-.hide {
-  display: none;
-}
-
 button.selected {
   background-color: rgba(0, 0, 0, 0.15);
+}
+
+#setup {
+  width: 20%;
+  height: 40%;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+#game-choice-buttons {
+  flex-basis: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+#players-info.visible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#play-button {
+  margin-top: 20px;
+}
+
+#setup label {
+  margin-right: 20px;
+}
+
+#players-info div.visible {
+  display: flex;
+  flex-direction: column;
+}
+
+#player2-info {
+  margin-top: 2rem;
+}
+
+.hide {
+  display: none;
 }
