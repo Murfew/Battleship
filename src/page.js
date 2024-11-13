@@ -1,12 +1,13 @@
 import { playGame } from "./game";
 import { ComputerPlayer, Player } from "./player";
+import { waitForEventOnSingularElement } from "./utils";
 
 /**
  * Resets the current HTML and add the containers for the players boards, and displays the turn player's name
  * @param {Player} player The turn player
  * @param {Player} opponent The opponent
  */
-export function initializePage(player, opponent) {
+export function initializeBoardsPage(player, opponent) {
   const turnPlayerDisplay = document.createElement("h1");
   turnPlayerDisplay.textContent = `${player.name}'s turn`;
 
@@ -22,27 +23,27 @@ export function initializePage(player, opponent) {
 
   const body = document.querySelector("body");
   // Reset the page
-  body.replaceAllChildren();
+  body.replaceChildren();
   body.append(turnPlayerDisplay, boards);
 }
 
 /**
  * Render a player's board on screen with ships, misses, and hits
  * @param {Player} player The player who's board should be rendered
- * @param {Boolean} isOpponent Flag for determining whether this is the player's opponent's board or theirs
+ * @param {Boolean} showShips Flag for determining whether or not to display the player's ships on the board
  */
-export function renderPlayerBoard(player, isOpponent) {
+export function renderPlayerBoard(player, showShips) {
   const boardContainer = document.querySelector(
     `#${player.name.replaceAll(" ", "-")}-board`
   );
 
   // Clear the board
-  boardContainer.replaceAllChildren();
+  boardContainer.replaceChildren();
 
-  renderCells(player, boardContainer, isOpponent);
+  renderCells(player, boardContainer, !showShips);
 
   // Only render the ships of the turn player's board
-  if (!isOpponent) {
+  if (showShips) {
     renderShips(player);
   }
 
@@ -122,18 +123,33 @@ function renderShips(player) {
   // Give each cell that a ship is on the .ship class
   for (const obj of ships) {
     const shipCoordinates = obj.coordinates;
+    const horizontalVariation = shipCoordinates[1][0] - shipCoordinates[0][0];
 
-    for (const pair of shipCoordinates) {
+    const directionClass =
+      horizontalVariation === 1 ? "horizontal" : "vertical";
+
+    for (let i = 0; i < shipCoordinates.length; i++) {
       const cell = document.querySelector(
         `#${player.name.replaceAll(" ", "-")}-board [data-col='${
-          pair[0] + 1
-        }'][data-row='${pair[1] + 1}']`
+          shipCoordinates[i][0] + 1
+        }'][data-row='${shipCoordinates[i][1] + 1}']`
       );
+      const ship = document.createElement("div");
+      ship.classList.add("ship");
+      ship.classList.add(directionClass);
+      if (i === 0) {
+        ship.classList.add("start");
+      }
 
-      cell.classList.add("ship");
+      if (i === shipCoordinates.length - 1) {
+        ship.classList.add("end");
+      }
+      cell.append(ship);
     }
   }
 }
+
+// TODO: Fix hit and miss markers
 
 /**
  * Renders the moves made by the opponent that resulted in a hit on the specified player's board
@@ -153,12 +169,10 @@ function renderHits(player) {
     cell.classList.remove("clickable");
 
     // Add the hit marker on the cell
-    if (cell.childElementCount === 0) {
-      const marker = document.createElement("div");
-      marker.classList.add("hit");
-      marker.classList.add("marker");
-      cell.append(marker);
-    }
+    const marker = document.createElement("div");
+    marker.classList.add("hit");
+    marker.classList.add("marker");
+    cell.append(marker);
   }
 }
 
@@ -180,12 +194,10 @@ function renderMisses(player) {
     cell.classList.remove("clickable");
 
     // Add the miss marker
-    if (cell.childElementCount === 0) {
-      const marker = document.createElement("div");
-      marker.classList.add("miss");
-      marker.classList.add("marker");
-      cell.append(marker);
-    }
+    const marker = document.createElement("div");
+    marker.classList.add("miss");
+    marker.classList.add("marker");
+    cell.append(marker);
   }
 }
 
@@ -378,3 +390,9 @@ export async function flipScreen() {
 
   await waitForEventOnSingularElement(continueButton, "click");
 }
+
+/**
+ * Resets the page content and prepares the page to allow the player to place their ships
+ * @param {Player} player The player who is placing their ships
+ */
+export function initializeShipsPage(player) {}

@@ -56,6 +56,44 @@ body > div:last-child .cell.clickable:hover {
   background-color: gray;
 }
 
+.ship.vertical {
+  width: 75%;
+  height: 100%;
+}
+
+.ship.horizontal {
+  height: 75%;
+  width: 100%;
+}
+
+.ship.horizontal.end {
+  border-top-right-radius: 100%;
+  border-bottom-right-radius: 100%;
+  margin-right: auto;
+  width: 75%;
+}
+
+.ship.horizontal.start {
+  border-top-left-radius: 100%;
+  border-bottom-left-radius: 100%;
+  margin-left: auto;
+  width: 75%;
+}
+
+.ship.vertical.end {
+  border-bottom-left-radius: 100%;
+  border-bottom-right-radius: 100%;
+  margin-bottom: auto;
+  height: 75%;
+}
+
+.ship.vertical.start {
+  border-top-left-radius: 100%;
+  border-top-right-radius: 100%;
+  margin-top: auto;
+  height: 75%;
+}
+
 .hit {
   background-color: red;
 }
