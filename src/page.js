@@ -149,8 +149,6 @@ function renderShips(player) {
   }
 }
 
-// TODO: Fix hit and miss markers
-
 /**
  * Renders the moves made by the opponent that resulted in a hit on the specified player's board
  * @param {Player} player Player who's board's hits are to be rendered
@@ -168,11 +166,20 @@ function renderHits(player) {
     // Make the cell's hover effect disappear, since it is no longer a valid move
     cell.classList.remove("clickable");
 
-    // Add the hit marker on the cell
+    // Create the marker element
     const marker = document.createElement("div");
     marker.classList.add("hit");
     marker.classList.add("marker");
-    cell.append(marker);
+
+    // Add it on the ship, if there is one
+    if (cell.childElementCount === 1) {
+      const ship = cell.querySelector(".ship");
+      ship.append(marker);
+
+      // Otherwise add the marker to the cell
+    } else {
+      cell.append(marker);
+    }
   }
 }
 
@@ -193,11 +200,20 @@ function renderMisses(player) {
     // Make the cell's hover effect disappear, since it is no longer a valid move
     cell.classList.remove("clickable");
 
-    // Add the miss marker
+    // Create the marker element
     const marker = document.createElement("div");
     marker.classList.add("miss");
     marker.classList.add("marker");
-    cell.append(marker);
+
+    // Add it on the ship, if there is one
+    if (cell.childElementCount === 1) {
+      const ship = cell.querySelector(".ship");
+      ship.append(marker);
+
+      // Otherwise add the marker to the cell
+    } else {
+      cell.append(marker);
+    }
   }
 }
 
