@@ -362,6 +362,8 @@ export function showGameOver(winner, player1, player2) {
   playAgainButton.autofocus = true;
   playAgainButton.addEventListener("click", () => {
     modal.close();
+    player1.resetBoard();
+    player2.resetBoard();
     playGame(player1, player2);
   });
 

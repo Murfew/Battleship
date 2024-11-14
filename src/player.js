@@ -30,6 +30,13 @@ export class Player {
   get board() {
     return this.#board;
   }
+
+  /**
+   * Resets the player's gameboard
+   */
+  resetBoard() {
+    this.#board = new Gameboard();
+  }
 }
 
 /**
@@ -90,6 +97,11 @@ export class ComputerPlayer extends Player {
     return false;
   }
 
+  /**
+   *
+   * @param {Array} move Represents game coordinates of a possible move
+   * @returns Boolean representing if a move is in the adjacent moves queue already or not
+   */
   checkIfMoveInAdjacents(move) {
     for (const adjacent of this.#movesAdjacentToHits) {
       if (compareArrays(adjacent, move)) {
