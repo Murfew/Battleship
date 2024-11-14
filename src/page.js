@@ -207,6 +207,7 @@ function renderMisses(player) {
 
     // Add it on the ship, if there is one
     if (cell.childElementCount === 1) {
+      console.log("cell:", cell);
       const ship = cell.querySelector(".ship");
       ship.append(marker);
 
@@ -352,7 +353,7 @@ export async function announceSunk() {
  * @param {Player} winner The player who won the game
  * @param {Player} opponent THe player who lost the game
  */
-export function showGameOver(winner, opponent) {
+export function showGameOver(winner, player1, player2) {
   const modalText = document.createElement("div");
   modalText.textContent = `Game Over! ${winner.name} wins!`;
 
@@ -361,7 +362,7 @@ export function showGameOver(winner, opponent) {
   playAgainButton.autofocus = true;
   playAgainButton.addEventListener("click", () => {
     modal.close();
-    playGame(winner, loser);
+    playGame(player1, player2);
   });
 
   const closeButton = document.createElement("button");

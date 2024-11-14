@@ -47,13 +47,16 @@ body > div:last-child .cell.clickable:hover {
 }
 
 .marker {
-  height: 45%;
-  width: 45%;
+  height: 0.75em;
+  width: 0.75em;
   border-radius: 100%;
 }
 
 .ship {
   background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ship.vertical {
@@ -70,28 +73,28 @@ body > div:last-child .cell.clickable:hover {
   border-top-right-radius: 100%;
   border-bottom-right-radius: 100%;
   margin-right: auto;
-  width: 75%;
+  width: 80%;
 }
 
 .ship.horizontal.start {
   border-top-left-radius: 100%;
   border-bottom-left-radius: 100%;
   margin-left: auto;
-  width: 75%;
+  width: 80%;
 }
 
 .ship.vertical.end {
   border-bottom-left-radius: 100%;
   border-bottom-right-radius: 100%;
   margin-bottom: auto;
-  height: 75%;
+  height: 80%;
 }
 
 .ship.vertical.start {
   border-top-left-radius: 100%;
   border-top-right-radius: 100%;
   margin-top: auto;
-  height: 75%;
+  height: 80%;
 }
 
 .hit {

@@ -64,7 +64,7 @@ export async function playGame(player1, player2) {
 
     // Stop game and announce winner if the player won
     if (opponent.board.checkShips() === 5) {
-      showGameOver(turnPlayer, opponent);
+      showGameOver(turnPlayer, turnPlayer, opponent);
       break;
     }
 
@@ -75,13 +75,19 @@ export async function playGame(player1, player2) {
       // Process the computer's attack
       const computerMove = opponent.makeMove();
       turnPlayer.board.receiveAttack(computerMove);
-      console.log(computerMove);
+      renderPlayerBoard(turnPlayer, true);
 
       const numberHitsAfterMove = turnPlayer.board.hits.length;
 
       // If the move was a hit, add the adjacent cells to be tried next
       if (numberHitsAfterMove !== numberHitsBeforeMove) {
         opponent.addAdjacentMoves(computerMove);
+      }
+
+      // Check if the computer won
+      if (turnPlayer.board.checkShips() === 5) {
+        showGameOver(opponent, turnPlayer, opponent);
+        break;
       }
 
       // Human vs. Human

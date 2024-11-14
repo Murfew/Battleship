@@ -57,10 +57,10 @@ export class ComputerPlayer extends Player {
 
     // Check if there are any cells adjacent to previous hits
     // If so, use one of those as our move
-    if (this.#movesAdjacentToHits.length != 0) {
-      move = this.#movesAdjacentToHits.at(-1);
-      this.#movesAdjacentToHits.pop();
+    if (this.#movesAdjacentToHits.length !== 0) {
+      move = this.#movesAdjacentToHits.pop();
       this.#previousMoves.push(move);
+
       return move;
 
       // If not, make a random move
@@ -90,6 +90,16 @@ export class ComputerPlayer extends Player {
     return false;
   }
 
+  checkIfMoveInAdjacents(move) {
+    for (const adjacent of this.#movesAdjacentToHits) {
+      if (compareArrays(adjacent, move)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   /**
    * Adds the cells adjacent to a given cell to our list of priority moves to make
    * @param {Array} coordinates Coordinates of cells who's adjacent cells we want to add
@@ -109,13 +119,15 @@ export class ComputerPlayer extends Player {
     // Only add if the moves are valid
     // 1. In bounds
     // 2. Not already made
+    // 3. Not in adjacent queue
     for (const move of possibleAdjacentMoves) {
       if (
         move[0] < this.board.size &&
         move[0] >= 0 &&
         move[1] < this.board.size &&
         move[1] >= 0 &&
-        !this.checkIfMoveAlreadyMade(move)
+        !this.checkIfMoveAlreadyMade(move) &&
+        !this.checkIfMoveInAdjacents(move)
       ) {
         this.#movesAdjacentToHits.push(move);
       }
