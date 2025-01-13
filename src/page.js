@@ -3,7 +3,8 @@ import { ComputerPlayer, Player } from "./player";
 import { waitForEventOnSingularElement } from "./utils";
 
 /**
- * Resets the current HTML and add the containers for the players boards, and displays the turn player's name
+ * Resets the current HTML and add the containers for the players boards, and
+ * displays the turn player's name
  * @param {Player} player The turn player
  * @param {Player} opponent The opponent
  */
@@ -56,9 +57,9 @@ export function renderPlayerBoard(player, showShips) {
  * Renders the board cells for the specified player
  * @param {Player} player Player who's board is board cells are to be rendered
  * @param {Element} DOMContainer DOM Element where the player's cells should be added
- * @param {Boolean} isOpponent flag to check if the board being rendered is the turn player's or the opponent's
+ * @param {Boolean} clickable determines whether or not the cells can be clicked
  */
-function renderCells(player, DOMContainer, isOpponent) {
+function renderCells(player, DOMContainer, clickable) {
   // For the column indices on screen
   const alphabetIndexes = {
     0: "A",
@@ -103,7 +104,7 @@ function renderCells(player, DOMContainer, isOpponent) {
         boardCell.dataset.col = j;
 
         // Player should only click on the opponent's cells
-        if (isOpponent) {
+        if (clickable) {
           boardCell.classList.add("clickable");
         }
       }
@@ -150,7 +151,8 @@ function renderShips(player) {
 }
 
 /**
- * Renders the moves made by the opponent that resulted in a hit on the specified player's board
+ * Renders the moves made by the opponent that resulted in a hit on the
+ * specified player's board
  * @param {Player} player Player who's board's hits are to be rendered
  */
 function renderHits(player) {
@@ -184,7 +186,8 @@ function renderHits(player) {
 }
 
 /**
- * Renders the moves made by the opponent that resulted in a miss on the specified player's board
+ * Renders the moves made by the opponent that resulted in a miss on the
+ * specified player's board
  * @param {Player} player Player who's board's misses are to be rendered
  */
 function renderMisses(player) {
@@ -219,7 +222,8 @@ function renderMisses(player) {
 }
 
 /**
- * Renders a modal that asks the player if they wish to play against the computer or another person.
+ * Renders a modal that asks the player if they wish to play against the
+ * computer or another person.
  * Then takes in the username(s) of the player(s) and starts the game.
  */
 export async function setupGame() {
@@ -323,7 +327,8 @@ export async function setupGame() {
 }
 
 /**
- * Announces via a modal that a player just sunk a ship. Waits until they press "Continue" before resuming the game.
+ * Announces via a modal that a player just sunk a ship. Waits until they press
+ * "Continue" before resuming the game.
  */
 export async function announceSunk() {
   const modalText = document.createElement("div");
@@ -349,7 +354,8 @@ export async function announceSunk() {
 }
 
 /**
- * Announces via a modal which player just won the game. Asks the players if they would like to play again or quit the game.
+ * Announces via a modal which player just won the game. Asks the players if
+ * they would like to play again or quit the game.
  * @param {Player} winner The player who won the game
  * @param {Player} opponent THe player who lost the game
  */
@@ -411,7 +417,36 @@ export async function flipScreen() {
 }
 
 /**
- * Resets the page content and prepares the page to allow the player to place their ships
- * @param {Player} player The player who is placing their ships
+ * Renders the page for the place to place their ships
+ * @param {Player} player The player who is currently placing ships
  */
-export function initializeShipsPage(player) {}
+export async function placeShips(player) {
+  // Center board
+  const turnPlayerDisplay = document.createElement("h1");
+  turnPlayerDisplay.textContent = `${player.name} is placing their ships`;
+
+  const playerBoard = document.createElement("div");
+  playerBoard.id = `${player.name.replaceAll(" ", "-")}-board`;
+
+  const boards = document.createElement("div");
+  boards.id = "boards";
+  boards.append(playerBoard);
+
+  const body = document.querySelector("body");
+  // Reset the page and show the board
+  body.replaceChildren();
+  body.append(turnPlayerDisplay, boards);
+
+  renderPlayerBoard(player, false);
+
+  // TODO: ship hangar
+  // TODO: ship outline highlight on hover and while dragging
+  // TODO: click on ship allows choice of coordinates placement or random placement
+  // TODO: full random placement button
+  // TODO: Handle Drag and Drop
+  // TODO: continue button after all placed
+
+  // Add the event listener to the continue button
+  const continueBtn = document.querySelector("#continue-btn");
+  await waitForEventOnSingularElement(continueBtn);
+}

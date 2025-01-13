@@ -2,7 +2,7 @@ import {
   announceSunk,
   flipScreen,
   initializeBoardsPage,
-  initializeShipsPage,
+  placeShips,
   renderPlayerBoard,
   showGameOver,
 } from "./page";
@@ -19,13 +19,13 @@ export async function playGame(player1, player2) {
   const players = [player1, player2];
 
   // Wait for Player 1 to place their ships
-  //await placeShips(player1);
+  await placeShips(player1);
 
   // Give the screen to the opponent
-  //await flipScreen();
+  await flipScreen();
 
   // Wait for player 2 to place their ships
-  //await placeShips(player2);
+  await placeShips(player2);
 
   player1.board.randomShipSetup();
   player2.board.randomShipSetup();
@@ -116,14 +116,4 @@ function attack(event, player) {
 
   // render opponent board after attack
   renderPlayerBoard(player, false);
-}
-
-// TODO: Make page with board in center, bottom right has ship "hangar", bottom left has confirm placements button that appears when all ships have been placed. Ships outline highlights on hover. Click allows choice of coordinates or random placement. Ships can be "dragged and dropped" on the board. Have a full random "shuffle" button. Make the ships look nicer (rounded edges at the ends)
-
-/**
- * This function brings the player into the ship placement phase of the game setup. It waits for the player to confirm their ship selection before continuing.
- * @param {Player} player The player who is placing their ships
- */
-async function placeShips(player) {
-  initializeShipsPage(player);
 }
