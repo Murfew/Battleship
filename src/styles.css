@@ -191,6 +191,11 @@ button.selected {
   margin: 10px;
   width: 60%;
   height: 25px;
+  transition: outline 0.1s ease;
+}
+
+.ship-container:hover {
+  outline: solid 4px #ff4500;
 }
 
 .ship-container.carrier {

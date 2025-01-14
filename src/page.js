@@ -463,11 +463,10 @@ export async function placeShips(player) {
     hangar.append(shipContainer);
   }
 
-  // TODO: ship outline highlight on hover and while dragging
   // TODO: click on ship allows choice of coordinates placement or random placement
   // TODO: full random placement button
   // TODO: continue button after all placed
-  // TODO: Handle Drag and Drop
+  // TODO: Handle Drag and Drop + highlight
 
   // Add the event listener to the continue button
   const continueBtn = document.querySelector("#continue-btn");
