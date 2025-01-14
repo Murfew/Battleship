@@ -72,7 +72,8 @@ export class ComputerPlayer extends Player {
 
       // If not, make a random move
     } else {
-      // Generate a random move until we generate a move that hasn't been made already
+      // Generate a random move until we generate a move that hasn't been made
+      // already
       do {
         move = getRandomCoords(this.board.size);
       } while (this.checkIfMoveAlreadyMade(move));
@@ -100,7 +101,8 @@ export class ComputerPlayer extends Player {
   /**
    *
    * @param {Array} move Represents game coordinates of a possible move
-   * @returns Boolean representing if a move is in the adjacent moves queue already or not
+   * @returns Boolean representing if a move is in the adjacent moves queue
+   * already or not
    */
   checkIfMoveInAdjacents(move) {
     for (const adjacent of this.#movesAdjacentToHits) {
@@ -113,8 +115,10 @@ export class ComputerPlayer extends Player {
   }
 
   /**
-   * Adds the cells adjacent to a given cell to our list of priority moves to make
-   * @param {Array} coordinates Coordinates of cells who's adjacent cells we want to add
+   * Adds the cells adjacent to a given cell to our list of priority moves to
+   * make
+   * @param {Array} coordinates Coordinates of cells who's adjacent cells we
+   * want to add
    */
   addAdjacentMoves(coordinates) {
     // x + 1

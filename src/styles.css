@@ -175,3 +175,40 @@ button.selected {
 .hide {
   display: none;
 }
+
+#hangar {
+  border: black solid 4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: max-content;
+  margin: auto;
+  padding: 10px;
+}
+
+.ship-container {
+  display: flex;
+  margin: 10px;
+  width: 60%;
+  height: 25px;
+}
+
+.ship-container.carrier {
+  width: 125px;
+}
+
+.ship-container.battleship {
+  width: 100px;
+}
+
+.ship-container.cruiser {
+  width: 75px;
+}
+
+.ship-container.submarine {
+  width: 75px;
+}
+
+.ship-container.destroyer {
+  width: 50px;
+}

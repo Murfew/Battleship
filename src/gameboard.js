@@ -87,7 +87,8 @@ export class Gameboard {
    * Places a ship on the board
    * @param {String} name The name of the ship to be placed
    * @param {Array} start The starting coordinate for the ship
-   * @param {Array} direction The direction the ship should be placed in; [0, 1] for downwards and [1, 0] for to the right
+   * @param {Array} direction The direction the ship should be placed in; 
+   * [0,1] for downwards and [1, 0] for to the right
    */
   placeShip(name, start, direction) {
     let currentShip = this.getShip(name);
@@ -104,7 +105,8 @@ export class Gameboard {
   /**
    * Checks to see if a given coordinate corresponds to a ship's coordinate
    * @param {Array} coordinates Coordinates to check for an overlap
-   * @returns An array stating if there was an overlap, and if so with the ship with which it occurred
+   * @returns An array stating if there was an overlap, and if so with the ship
+   * with which it occurred
    */
   #checkOverlap(coordinates) {
     for (const ship of this.#ships) {
@@ -153,8 +155,10 @@ export class Gameboard {
    * Checks if a ships placement is valid
    * @param {String} name The ship's name
    * @param {Array} start The ship's starting coordinates
-   * @param {Array} direction The ships direction. [0, 1] for down and [1, 0] for right.
-   * @returns True if the ship can be placed at the start coordinates in that direction
+   * @param {Array} direction The ships direction. [0, 1] for down and [1, 0]
+   * for right.
+   * @returns True if the ship can be placed at the start coordinates in that
+   * direction
    */
   checkShipIsValid(name, start, direction) {
     const shipLength = this.getShip(name).ship.length;
@@ -180,7 +184,8 @@ export class Gameboard {
 
   /**
    * Randomly generates a ship configuration for the player
-   * @param {Player} player - The player to have their board's configuration be randomly generated
+   * @param {Player} player - The player to have their board's configuration be
+   * randomly generated
    */
   randomShipSetup() {
     for (const obj of this.ships) {

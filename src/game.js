@@ -13,7 +13,9 @@ import { waitForEventOnMultipleElements } from "./utils";
  * Handles the logic of the game loop of Computer vs. Human and Human vs. Human
  */
 export async function playGame(player1, player2) {
-  // Get turn counter, which helps track who's turn it is in a human vs human game
+  // Get turn counter, which helps track who's turn it is in a human vs human
+  // game
+
   // Get the player Objects
   let turnCounter = 0;
   const players = [player1, player2];

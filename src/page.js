@@ -433,18 +433,41 @@ export async function placeShips(player) {
   boards.append(playerBoard);
 
   const body = document.querySelector("body");
+
   // Reset the page and show the board
   body.replaceChildren();
   body.append(turnPlayerDisplay, boards);
 
   renderPlayerBoard(player, false);
 
-  // TODO: ship hangar
+  // ship hangar
+
+  const hangar = document.createElement("div");
+  hangar.id = "hangar";
+  body.append(hangar);
+
+  const playerShips = player.board.ships;
+
+  for (const ship of playerShips) {
+    const shipContainer = document.createElement("div");
+    shipContainer.classList.add("ship-container");
+    shipContainer.classList.add(ship.name);
+
+    for (let i = 0; i < ship.ship.length; i++) {
+      const shipCell = document.createElement("div");
+      shipCell.classList.add("cell");
+      shipCell.classList.add("ship");
+      shipContainer.append(shipCell);
+    }
+
+    hangar.append(shipContainer);
+  }
+
   // TODO: ship outline highlight on hover and while dragging
   // TODO: click on ship allows choice of coordinates placement or random placement
   // TODO: full random placement button
-  // TODO: Handle Drag and Drop
   // TODO: continue button after all placed
+  // TODO: Handle Drag and Drop
 
   // Add the event listener to the continue button
   const continueBtn = document.querySelector("#continue-btn");
