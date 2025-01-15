@@ -460,6 +460,12 @@ export async function placeShips(player) {
       shipContainer.append(shipCell);
     }
 
+    const shipName = document.createElement("span");
+    shipName.textContent = ship.name.at(0).toUpperCase() + ship.name.slice(1);
+    shipName.classList.add("tooltip");
+
+    shipContainer.append(shipName);
+
     hangar.append(shipContainer);
   }
 

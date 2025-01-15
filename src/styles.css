@@ -183,7 +183,7 @@ button.selected {
   justify-content: center;
   width: max-content;
   margin: auto;
-  padding: 10px;
+  padding: 20px 10px;
 }
 
 .ship-container {
@@ -192,6 +192,8 @@ button.selected {
   width: 60%;
   height: 25px;
   transition: outline 0.1s ease;
+  cursor: pointer;
+  position: relative;
 }
 
 .ship-container:hover {
@@ -216,4 +218,18 @@ button.selected {
 
 .ship-container.destroyer {
   width: 50px;
+}
+
+.tooltip {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  visibility: hidden;
+  transition: transform 0.3s ease;
+}
+
+.ship-container:hover .tooltip {
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
 }
