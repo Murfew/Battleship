@@ -87,7 +87,7 @@ export class Gameboard {
    * Places a ship on the board
    * @param {String} name The name of the ship to be placed
    * @param {Array} start The starting coordinate for the ship
-   * @param {Array} direction The direction the ship should be placed in; 
+   * @param {Array} direction The direction the ship should be placed in;
    * [0,1] for downwards and [1, 0] for to the right
    */
   placeShip(name, start, direction) {
@@ -200,6 +200,27 @@ export class Gameboard {
       } while (!this.checkShipIsValid(obj.name, testStart, testDirection));
 
       this.placeShip(obj.name, testStart, testDirection);
+    }
+  }
+
+  /**
+   * Removes a given ship from the gameboard
+   * @param {String} name The name of the ship to be removed from the board
+   */
+  removeShip(name) {
+    for (const obj of this.ships) {
+      if (obj.name === name) {
+        obj.coordinates = [];
+      }
+    }
+  }
+
+  /**
+   * Removes all ships from the gameboard
+   */
+  removeAllShips() {
+    for (const obj of this.ships) {
+      obj.coordinates = [];
     }
   }
 }

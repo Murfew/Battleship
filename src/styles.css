@@ -2,6 +2,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  margin: 0;
 }
 
 #boards {
@@ -14,7 +15,7 @@ body {
   flex-direction: column;
   height: 300px;
   min-width: 300px;
-  margin: 100px;
+  margin: 75px;
 }
 
 h1 {
@@ -117,14 +118,14 @@ dialog[open] {
   overflow: hidden;
 }
 
-dialog button {
+button {
   width: fit-content;
   font-size: 1.25rem;
   border-radius: 5px;
   padding: 5px;
 }
 
-dialog button:hover {
+button:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.15);
 }
@@ -232,4 +233,9 @@ button.selected {
 .ship-container:hover .tooltip {
   visibility: visible;
   transform: translateX(-50%) translateY(-5px);
+}
+
+.random-btn {
+  margin: auto;
+  margin-bottom: 10px;
 }

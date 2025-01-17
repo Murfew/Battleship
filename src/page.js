@@ -440,7 +440,21 @@ export async function placeShips(player) {
 
   renderPlayerBoard(player, false);
 
-  // ship hangar
+  // Full random placement of ships
+
+  const randomButton = document.createElement("button");
+  randomButton.textContent = "Randomize";
+  randomButton.classList.add("random-btn");
+
+  randomButton.addEventListener("click", () => {
+    player.board.removeAllShips();
+    player.board.randomShipSetup();
+    renderPlayerBoard(player, true);
+  });
+
+  body.append(randomButton);
+
+  // Ship hangar
 
   const hangar = document.createElement("div");
   hangar.id = "hangar";
@@ -470,11 +484,7 @@ export async function placeShips(player) {
   }
 
   // TODO: click on ship allows choice of coordinates placement or random placement
-  // TODO: full random placement button
+  // TODO: Make ships unable to be clicked after being placed
   // TODO: continue button after all placed
   // TODO: Handle Drag and Drop + highlight
-
-  // Add the event listener to the continue button
-  const continueBtn = document.querySelector("#continue-btn");
-  await waitForEventOnSingularElement(continueBtn);
 }
