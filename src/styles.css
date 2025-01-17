@@ -197,8 +197,12 @@ button.selected {
   position: relative;
 }
 
-.ship-container:hover {
+.ship-container.available:hover {
   outline: solid 4px #ff4500;
+}
+
+.ship-container.unavailable {
+  filter: brightness(0.4);
 }
 
 .ship-container.carrier {

@@ -441,7 +441,6 @@ export async function placeShips(player) {
   renderPlayerBoard(player, false);
 
   // Full random placement of ships
-
   const randomButton = document.createElement("button");
   randomButton.textContent = "Randomize";
   randomButton.classList.add("random-btn");
@@ -450,12 +449,18 @@ export async function placeShips(player) {
     player.board.removeAllShips();
     player.board.randomShipSetup();
     renderPlayerBoard(player, true);
+
+    // Make ships unavailable to be clicked in hangar
+    const ships = document.querySelectorAll(".ship-container");
+    for (const ship of ships) {
+      ship.classList.remove("available");
+      ship.classList.add("unavailable");
+    }
   });
 
   body.append(randomButton);
 
   // Ship hangar
-
   const hangar = document.createElement("div");
   hangar.id = "hangar";
   body.append(hangar);
@@ -466,6 +471,7 @@ export async function placeShips(player) {
     const shipContainer = document.createElement("div");
     shipContainer.classList.add("ship-container");
     shipContainer.classList.add(ship.name);
+    shipContainer.classList.add("available");
 
     for (let i = 0; i < ship.ship.length; i++) {
       const shipCell = document.createElement("div");
@@ -487,4 +493,8 @@ export async function placeShips(player) {
   // TODO: Make ships unable to be clicked after being placed
   // TODO: continue button after all placed
   // TODO: Handle Drag and Drop + highlight
+
+  // Add the event listener to the continue button
+  const continueBtn = document.querySelector("#continue-btn");
+  await waitForEventOnSingularElement(continueBtn);
 }
