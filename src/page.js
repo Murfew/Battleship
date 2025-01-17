@@ -460,6 +460,27 @@ export async function placeShips(player) {
 
   body.append(randomButton);
 
+  // TODO: fix placement of reset button
+
+  // Reset all ship placements
+  const resetButton = document.createElement("button");
+  resetButton.textContent = "Reset";
+  resetButton.classList.add("reset-btn");
+
+  resetButton.addEventListener("click", () => {
+    player.board.removeAllShips();
+    renderPlayerBoard(player, false);
+
+    // Make ships available
+    const ships = document.querySelectorAll(".ship-container");
+    for (const ship of ships) {
+      ship.classList.remove("unavailable");
+      ship.classList.add("available");
+    }
+  });
+
+  body.append(resetButton);
+
   // Ship hangar
   const hangar = document.createElement("div");
   hangar.id = "hangar";
@@ -489,8 +510,8 @@ export async function placeShips(player) {
     hangar.append(shipContainer);
   }
 
-  // TODO: click on ship allows choice of coordinates placement or random placement
-  // TODO: Make ships unable to be clicked after being placed
+  // TODO: click on ship allows choice of coordinates placement or random placement (cannot click unavailable ships)
+  // TODO: click on placed ship allows to change position or remove it
   // TODO: continue button after all placed
   // TODO: Handle Drag and Drop + highlight
 
