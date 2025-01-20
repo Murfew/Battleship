@@ -450,6 +450,9 @@ export async function placeShips(player) {
   body.append(placementInfo);
 
   // Create and place global placement buttons
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("btn-container");
+  body.append(buttonContainer);
   createGlobalPlacementButtons(player);
 
   // Ship hangar
@@ -525,10 +528,6 @@ export async function placeShips(player) {
       );
       // Add buttons to container
       buttonContainer.append(randomBtn, resetBtn, coordBtn, unselectBtn);
-
-      // Reset selection text
-      // Add back global random button
-      // Add back global reset button
     });
   });
 
@@ -580,10 +579,8 @@ function createGlobalPlacementButtons(player) {
   });
 
   // Place Buttons
-  const buttonContainer = document.createElement("div");
-  buttonContainer.classList.add("btn-container");
+  const buttonContainer = document.querySelector(".btn-container");
   buttonContainer.append(randomButton, resetButton);
-  body.append(buttonContainer);
 }
 
 function addPlacementBtnListeners(
@@ -594,6 +591,7 @@ function addPlacementBtnListeners(
   coordBtn,
   unselectBtn
 ) {
+  // Random
   randomBtn.addEventListener("click", () => {
     player.board.removeShip(shipName);
     player.board.randomShipPlacement(shipName);
@@ -604,6 +602,7 @@ function addPlacementBtnListeners(
     shipContainer.classList.add("unavailable");
   });
 
+  // Reset
   resetBtn.addEventListener("click", () => {
     player.board.removeShip(shipName);
     renderPlayerBoard(player, true);
@@ -611,5 +610,19 @@ function addPlacementBtnListeners(
     const shipContainer = document.querySelector(`.ship-container.${shipName}`);
     shipContainer.classList.add("available");
     shipContainer.classList.remove("unavailable");
+  });
+
+  // Coords
+  // Unselect
+  unselectBtn.addEventListener("click", () => {
+    // Reset selection text
+    const selectionText = document.querySelector(".placement-info");
+    selectionText.textContent = "All ships selected!";
+
+    // Add back global random button
+    // Add back global reset button
+    const btnContainer = document.querySelector(".btn-container");
+    btnContainer.replaceChildren();
+    createGlobalPlacementButtons(player);
   });
 }
