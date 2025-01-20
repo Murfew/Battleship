@@ -458,10 +458,6 @@ export async function placeShips(player) {
     }
   });
 
-  body.append(randomButton);
-
-  // TODO: fix placement of reset button
-
   // Reset all ship placements
   const resetButton = document.createElement("button");
   resetButton.textContent = "Reset";
@@ -479,7 +475,11 @@ export async function placeShips(player) {
     }
   });
 
-  body.append(resetButton);
+  // Place Buttons
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("btn-container");
+  buttonContainer.append(randomButton, resetButton);
+  body.append(buttonContainer);
 
   // Ship hangar
   const hangar = document.createElement("div");
