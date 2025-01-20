@@ -603,4 +603,13 @@ function addPlacementBtnListeners(
     shipContainer.classList.remove("available");
     shipContainer.classList.add("unavailable");
   });
+
+  resetBtn.addEventListener("click", () => {
+    player.board.removeShip(shipName);
+    renderPlayerBoard(player, true);
+
+    const shipContainer = document.querySelector(`.ship-container.${shipName}`);
+    shipContainer.classList.add("available");
+    shipContainer.classList.remove("unavailable");
+  });
 }
