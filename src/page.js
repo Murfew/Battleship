@@ -440,52 +440,14 @@ export async function placeShips(player) {
 
   renderPlayerBoard(player, false);
 
-  // Full random placement of ships
-  const randomButton = document.createElement("button");
-  randomButton.textContent = "Randomize";
-  randomButton.classList.add("random-btn");
-
-  randomButton.addEventListener("click", () => {
-    player.board.removeAllShips();
-    player.board.randomShipSetup();
-    renderPlayerBoard(player, true);
-
-    // Make ships unavailable to be clicked in hangar
-    const ships = document.querySelectorAll(".ship-container");
-    for (const ship of ships) {
-      ship.classList.remove("available");
-      ship.classList.add("unavailable");
-    }
-  });
-
-  // Reset all ship placements
-  const resetButton = document.createElement("button");
-  resetButton.textContent = "Reset";
-  resetButton.classList.add("reset-btn");
-
-  resetButton.addEventListener("click", () => {
-    player.board.removeAllShips();
-    renderPlayerBoard(player, false);
-
-    // Make ships available
-    const ships = document.querySelectorAll(".ship-container");
-    for (const ship of ships) {
-      ship.classList.remove("unavailable");
-      ship.classList.add("available");
-    }
-  });
-
   // Display what ships are being placed with buttons
   const placementInfo = document.createElement("h2");
   placementInfo.classList.add("placement-info");
-  placementInfo.textContent = "All ships selected";
+  placementInfo.textContent = "All ships selected!";
   body.append(placementInfo);
 
-  // Place Buttons
-  const buttonContainer = document.createElement("div");
-  buttonContainer.classList.add("btn-container");
-  buttonContainer.append(randomButton, resetButton);
-  body.append(buttonContainer);
+  // Create and place global placement buttons
+  createGlobalPlacementButtons(player);
 
   // Ship hangar
   const hangar = document.createElement("div");
@@ -516,7 +478,23 @@ export async function placeShips(player) {
     hangar.append(shipContainer);
   }
 
-  // TODO: click on ship allows choice of coordinates placement or random placement (cannot click unavailable ships)
+  // TODO: click on ship allows choice of coordinates placement and updates selection text
+
+  const shipContainers = document.querySelectorAll(".ship-container");
+  shipContainers.forEach((ship) => {
+    ship.addEventListener("click", () => {
+      // Update selection text
+      // Remove other buttons
+      // Add coordinate choice
+      // Add random button
+      // Add reset button
+      // Add unselect button
+      // Reset selection text
+      // Add back global random button
+      // Add back global reset button
+    });
+  });
+
   // TODO: click on placed ship allows to change position or remove it
   // TODO: continue button after all placed
   // TODO: Handle Drag and Drop + highlight
@@ -524,4 +502,49 @@ export async function placeShips(player) {
   // Add the event listener to the continue button
   const continueBtn = document.querySelector("#continue-btn");
   await waitForEventOnSingularElement(continueBtn);
+}
+
+function createGlobalPlacementButtons(player) {
+  const body = document.querySelector("body");
+
+  // Create random button
+  const randomButton = document.createElement("button");
+  randomButton.textContent = "Randomize";
+  randomButton.classList.add("random-btn");
+
+  randomButton.addEventListener("click", () => {
+    player.board.removeAllShips();
+    player.board.randomShipSetup();
+    renderPlayerBoard(player, true);
+
+    // Make ships unavailable to be clicked in hangar
+    const ships = document.querySelectorAll(".ship-container");
+    for (const ship of ships) {
+      ship.classList.remove("available");
+      ship.classList.add("unavailable");
+    }
+  });
+
+  // Create reset button
+  const resetButton = document.createElement("button");
+  resetButton.textContent = "Reset";
+  resetButton.classList.add("reset-btn");
+
+  resetButton.addEventListener("click", () => {
+    player.board.removeAllShips();
+    renderPlayerBoard(player, false);
+
+    // Make ships available
+    const ships = document.querySelectorAll(".ship-container");
+    for (const ship of ships) {
+      ship.classList.remove("unavailable");
+      ship.classList.add("available");
+    }
+  });
+
+  // Place Buttons
+  const buttonContainer = document.createElement("div");
+  buttonContainer.classList.add("btn-container");
+  buttonContainer.append(randomButton, resetButton);
+  body.append(buttonContainer);
 }
