@@ -15,7 +15,7 @@ body {
   flex-direction: column;
   height: 300px;
   min-width: 300px;
-  margin: 75px;
+  margin: 60px;
 }
 
 h1 {
@@ -239,7 +239,8 @@ button.selected {
   transform: translateX(-50%) translateY(-5px);
 }
 
-.btn-container {
+.btn-container,
+.placement-info {
   margin: auto;
   margin-bottom: 10px;
 }

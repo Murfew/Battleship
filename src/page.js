@@ -475,6 +475,12 @@ export async function placeShips(player) {
     }
   });
 
+  // Display what ships are being placed with buttons
+  const placementInfo = document.createElement("h2");
+  placementInfo.classList.add("placement-info");
+  placementInfo.textContent = "All ships selected";
+  body.append(placementInfo);
+
   // Place Buttons
   const buttonContainer = document.createElement("div");
   buttonContainer.classList.add("btn-container");
