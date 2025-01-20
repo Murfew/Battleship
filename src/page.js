@@ -483,12 +483,25 @@ export async function placeShips(player) {
   const shipContainers = document.querySelectorAll(".ship-container");
   shipContainers.forEach((ship) => {
     ship.addEventListener("click", () => {
+      // Get clicked ship's name
+      const shipName = ship.classList.item(1);
+
       // Update selection text
+      const selectionText = document.querySelector(".placement-info");
+      selectionText.textContent =
+        shipName.at(0).toUpperCase() + shipName.slice(1) + " selected!";
+
       // Remove other buttons
-      // Add coordinate choice
-      // Add random button
-      // Add reset button
-      // Add unselect button
+      const buttonContainer = document.querySelector(".btn-container");
+      buttonContainer.replaceChildren();
+
+      // Create random button
+      const randomBtn = document.createElement("button");
+
+      // Create reset button
+      // Create coordinate button
+      // Create unselect button
+      // Add buttons to container
       // Reset selection text
       // Add back global random button
       // Add back global reset button

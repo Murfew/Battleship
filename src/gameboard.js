@@ -182,6 +182,22 @@ export class Gameboard {
     return true;
   }
 
+  randomShipPlacement(name) {
+    const ship = this.getShip(name);
+
+    let testStart;
+    let testDirection;
+
+    do {
+      // Generate a potential placement (start, direction)
+      // Keep generating until a valid placement is found
+      testStart = getRandomCoords(this.size);
+      testDirection = getRandomDirection();
+    } while (!this.checkShipIsValid(name, testStart, testDirection));
+
+    this.placeShip(name, testStart, testDirection);
+  }
+
   /**
    * Randomly generates a ship configuration for the player
    * @param {Player} player - The player to have their board's configuration be
@@ -189,17 +205,7 @@ export class Gameboard {
    */
   randomShipSetup() {
     for (const obj of this.ships) {
-      let testStart;
-      let testDirection;
-
-      do {
-        // Generate a potential placement (start, direction)
-        // Keep generating until a valid placement is found
-        testStart = getRandomCoords(this.size);
-        testDirection = getRandomDirection();
-      } while (!this.checkShipIsValid(obj.name, testStart, testDirection));
-
-      this.placeShip(obj.name, testStart, testDirection);
+      this.randomShipPlacement(obj.name);
     }
   }
 
