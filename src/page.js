@@ -531,7 +531,6 @@ export async function placeShips(player) {
     });
   });
 
-  // TODO: click on placed ship allows to change position or remove it
   // TODO: continue button after all placed
   // TODO: Handle Drag and Drop + highlight
 
@@ -613,6 +612,71 @@ function addPlacementBtnListeners(
   });
 
   // Coords
+  coordBtn.addEventListener("click", () => {
+    // TODO
+    // Create modal with form
+    const body = document.querySelector("body");
+    const modal = document.createElement("dialog");
+    const form = document.createElement("form");
+    const buttons = document.createElement("div");
+    const submitBtn = document.createElement("button");
+    const closeBtn = document.createElement("button");
+    const inputs = document.createElement("div");
+    const direction = document.createElement("fieldset");
+    const directionLegend = document.createElement("legend");
+    const directionDown = document.createElement("input");
+    const directionDownLabel = document.createElement("label");
+    const directionDownContainer = document.createElement("div");
+    const directionRight = document.createElement("input");
+    const directionRightLabel = document.createElement("label");
+    const directionRightContainer = document.createElement("div");
+
+    buttons.id = "buttons";
+    inputs.id = "inputs";
+    directionDown.id = "down";
+    directionRight.id = "right";
+
+    directionDown.type = "radio";
+    directionRight.type = "radio";
+
+    directionDown.checked = true;
+
+    directionDown.name = "direction";
+    directionRight.name = "direction";
+
+    directionLegend.textContent = "Select a direction: ";
+    directionDownLabel.textContent = "Down";
+    directionRightLabel.textContent = "Right";
+    submitBtn.textContent = "Submit";
+    closeBtn.textContent = "Close";
+
+    directionDownContainer.append(directionDown, directionDownLabel);
+    directionRightContainer.append(directionRight, directionRightLabel);
+    direction.append(
+      directionLegend,
+      directionDownContainer,
+      directionRightContainer
+    );
+    inputs.append(direction);
+    buttons.append(submitBtn, closeBtn);
+    form.append(inputs, buttons);
+    modal.append(form);
+    body.append(modal);
+
+    modal.showModal();
+
+    submitBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      // Place ship
+      modal.close();
+    });
+
+    closeBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      modal.close();
+    });
+  });
+
   // Unselect
   unselectBtn.addEventListener("click", () => {
     // Reset selection text
