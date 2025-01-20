@@ -3,6 +3,7 @@ body {
   flex-direction: column;
   justify-content: space-evenly;
   margin: 0;
+  position: relative;
 }
 
 #boards {
@@ -247,4 +248,48 @@ button.selected {
 
 .btn-container button:not(:last-child) {
   margin-right: 20px;
+}
+
+#coord-modal::backdrop {
+  backdrop-filter: none;
+}
+
+#coord-modal {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  height: max-content;
+  margin: auto 0 0 auto;
+  padding: 40px;
+  max-width: 300px;
+}
+
+#row-container,
+#col-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: max-content;
+}
+
+#row-container input,
+#col-container input {
+  width: max-content;
+}
+
+#coord-container {
+  display: flex;
+  justify-content: space-around;
+  margin: 15px 0;
+}
+
+#buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+#invalid-text {
+  overflow-wrap: break-word;
+  margin: 5px 0;
+  text-align: center;
 }

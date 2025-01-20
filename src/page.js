@@ -610,9 +610,6 @@ function addPlacementBtnListeners(
 
   // Coords
   coordBtn.addEventListener("click", () => {
-    // TODO: Validate coord ranges
-    // TODO: add CSS (inside modal, place modal away from center of board, remove blur of background)
-
     // Create modal with form
     const body = document.querySelector("body");
     const modal = document.createElement("dialog");
@@ -636,6 +633,7 @@ function addPlacementBtnListeners(
     const col = document.createElement("input");
     const colLabel = document.createElement("label");
     const colContainer = document.createElement("div");
+    const invalidText = document.createElement("p");
 
     buttons.id = "buttons";
     inputs.id = "inputs";
@@ -643,6 +641,11 @@ function addPlacementBtnListeners(
     directionRight.id = "right";
     row.id = "row";
     col.id = "col";
+    modal.id = "coord-modal";
+    rowContainer.id = "row-container";
+    colContainer.id = "col-container";
+    coordinates.id = "coord-container";
+    invalidText.id = "invalid-text";
 
     directionDown.type = "radio";
     directionRight.type = "radio";
@@ -653,24 +656,26 @@ function addPlacementBtnListeners(
     col.setAttribute("max", "9");
     row.setAttribute("min", "1");
     row.setAttribute("max", "9");
+    directionDownLabel.setAttribute("for", "down");
+    directionRightLabel.setAttribute("for", "right");
+    rowLabel.setAttribute("for", "row");
+    colLabel.setAttribute("for", "col");
 
     directionDown.checked = true;
 
     directionDown.name = "direction";
     directionRight.name = "direction";
 
-    directionDownLabel.setAttribute("for", "down");
-    directionRightLabel.setAttribute("for", "right");
-    rowLabel.setAttribute("for", "row");
-    colLabel.setAttribute("for", "col");
+    directionDown.value = "down";
+    directionRight.value = "right";
+
+    invalidText.style.display = "none";
 
     directionLegend.textContent = "Select a direction: ";
     directionDownLabel.textContent = "Down";
     directionRightLabel.textContent = "Right";
-
     rowLabel.textContent = "Row: ";
     colLabel.textContent = "Col: ";
-
     submitBtn.textContent = "Submit";
     closeBtn.textContent = "Close";
 
@@ -686,36 +691,68 @@ function addPlacementBtnListeners(
     coordinates.append(rowContainer, colContainer);
     inputs.append(direction, coordinates);
     buttons.append(submitBtn, closeBtn);
-    form.append(inputs, buttons);
+    form.append(invalidText, inputs, buttons);
     modal.append(form);
     body.append(modal);
 
     row.addEventListener("change", () => {
-      const value = row.value;
-      rowLabel.textContent = `Row: ${Number(value) + 1}`;
+      const value = Number(row.value);
+      if (value >= 1 && value <= 9) {
+        rowLabel.textContent = `Row: ${value}`;
+        row.setAttribute("isvalid", true);
+      } else {
+        rowLabel.textContent = "Row: ??";
+        row.setAttribute("isvalid", false);
+        invalidText.style.display = "block";
+        invalidText.textContent = "Invalid row. Please try again!";
+      }
     });
 
     col.addEventListener("change", () => {
-      const value = col.value;
-      colLabel.textContent = `Col: ${INDEX_TO_ALPHA[value]}`;
+      const value = Number(col.value);
+      if (value >= 1 && value <= 9) {
+        colLabel.textContent = `Col: ${INDEX_TO_ALPHA[value - 1]}`;
+        col.setAttribute("isvalid", true);
+      } else {
+        colLabel.textContent = "Col: ??";
+        col.setAttribute("isvalid", false);
+        invalidText.style.display = "block";
+        invalidText.textContent = "Invalid col. Please try again!";
+      }
     });
 
     modal.showModal();
 
     submitBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      player.board.placeShip(
-        shipName,
-        [Number(col.value), Number(row.value)],
-        [directionDown.checked ? 0 : 1, directionRight.checked ? 0 : 1]
-      );
-      const shipContainer = document.querySelector(
-        `.ship-container.${shipName}`
-      );
-      shipContainer.classList.remove("available");
-      shipContainer.classList.add("unavailable");
-      renderPlayerBoard(player, true);
-      modal.close();
+      const rowValue = Number(row.value);
+      const colValue = Number(col.value);
+      const startCell = [colValue - 1, rowValue - 1];
+      const direction = [
+        directionDown.checked ? 0 : 1,
+        directionRight.checked ? 0 : 1,
+      ];
+      if (
+        colValue >= 1 &&
+        colValue <= 9 &&
+        rowValue >= 1 &&
+        rowValue <= 9 &&
+        player.board.checkShipIsValid(shipName, startCell, direction)
+      ) {
+        player.board.placeShip(shipName, startCell, direction);
+
+        const shipContainer = document.querySelector(
+          `.ship-container.${shipName}`
+        );
+        shipContainer.classList.remove("available");
+        shipContainer.classList.add("unavailable");
+        renderPlayerBoard(player, true);
+
+        modal.close();
+      } else {
+        invalidText.style.display = "block";
+        invalidText.textContent = "Invalid ship placement. Please try again!";
+      }
     });
 
     closeBtn.addEventListener("click", (e) => {
