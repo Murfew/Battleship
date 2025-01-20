@@ -2,6 +2,18 @@ import { playGame } from "./game";
 import { ComputerPlayer, Player } from "./player";
 import { compareArrays, waitForEventOnSingularElement } from "./utils";
 
+const INDEX_TO_ALPHA = {
+  0: "A",
+  1: "B",
+  2: "C",
+  3: "D",
+  4: "E",
+  5: "F",
+  6: "H",
+  7: "I",
+  8: "J",
+};
+
 /**
  * Resets the current HTML and add the containers for the players boards, and
  * displays the turn player's name
@@ -60,19 +72,6 @@ export function renderPlayerBoard(player, showShips) {
  * @param {Boolean} clickable determines whether or not the cells can be clicked
  */
 function renderCells(player, DOMContainer, clickable) {
-  // For the column indices on screen
-  const alphabetIndexes = {
-    0: "A",
-    1: "B",
-    2: "C",
-    3: "D",
-    4: "E",
-    5: "F",
-    6: "H",
-    7: "I",
-    8: "J",
-  };
-
   for (let i = 0; i < player.board.size + 1; i++) {
     // Create a row
     const boardRow = document.createElement("div");
@@ -86,7 +85,7 @@ function renderCells(player, DOMContainer, clickable) {
       // Top row of letter indices
       if (i === 0 && j !== 0) {
         boardCell.classList.add("index-cell");
-        boardCell.textContent = alphabetIndexes[j - 1];
+        boardCell.textContent = INDEX_TO_ALPHA[j - 1];
 
         // Empty top left corner cell
       } else if (i === 0 && j === 0) {
@@ -484,8 +483,6 @@ export async function placeShips(player) {
     hangar.append(shipContainer);
   }
 
-  // TODO: click on ship allows choice of coordinates placement and updates selection text
-
   const shipContainers = document.querySelectorAll(".ship-container");
   shipContainers.forEach((ship) => {
     ship.addEventListener("click", () => {
@@ -613,7 +610,10 @@ function addPlacementBtnListeners(
 
   // Coords
   coordBtn.addEventListener("click", () => {
-    // TODO
+    // TODO: Validate coord ranges
+    // TODO: place the ship
+    // TODO: add CSS (inside modal, place modal away from center of board, remove blur of background)
+
     // Create modal with form
     const body = document.querySelector("body");
     const modal = document.createElement("dialog");
@@ -630,23 +630,48 @@ function addPlacementBtnListeners(
     const directionRight = document.createElement("input");
     const directionRightLabel = document.createElement("label");
     const directionRightContainer = document.createElement("div");
+    const coordinates = document.createElement("div");
+    const row = document.createElement("input");
+    const rowLabel = document.createElement("label");
+    const rowContainer = document.createElement("div");
+    const col = document.createElement("input");
+    const colLabel = document.createElement("label");
+    const colContainer = document.createElement("div");
 
     buttons.id = "buttons";
     inputs.id = "inputs";
     directionDown.id = "down";
     directionRight.id = "right";
+    row.id = "row";
+    col.id = "col";
 
     directionDown.type = "radio";
     directionRight.type = "radio";
+    col.type = "number";
+    row.type = "number";
+
+    col.setAttribute("min", "1");
+    col.setAttribute("max", "9");
+    row.setAttribute("min", "1");
+    row.setAttribute("max", "9");
 
     directionDown.checked = true;
 
     directionDown.name = "direction";
     directionRight.name = "direction";
 
+    directionDownLabel.setAttribute("for", "down");
+    directionRightLabel.setAttribute("for", "right");
+    rowLabel.setAttribute("for", "row");
+    colLabel.setAttribute("for", "col");
+
     directionLegend.textContent = "Select a direction: ";
     directionDownLabel.textContent = "Down";
     directionRightLabel.textContent = "Right";
+
+    rowLabel.textContent = "Row: ";
+    colLabel.textContent = "Col: ";
+
     submitBtn.textContent = "Submit";
     closeBtn.textContent = "Close";
 
@@ -657,11 +682,24 @@ function addPlacementBtnListeners(
       directionDownContainer,
       directionRightContainer
     );
-    inputs.append(direction);
+    rowContainer.append(rowLabel, row);
+    colContainer.append(colLabel, col);
+    coordinates.append(rowContainer, colContainer);
+    inputs.append(direction, coordinates);
     buttons.append(submitBtn, closeBtn);
     form.append(inputs, buttons);
     modal.append(form);
     body.append(modal);
+
+    row.addEventListener("change", () => {
+      const value = row.value;
+      rowLabel.textContent = `Row: ${value}`;
+    });
+
+    col.addEventListener("change", () => {
+      const value = col.value;
+      colLabel.textContent = `Col: ${INDEX_TO_ALPHA[value]}`;
+    });
 
     modal.showModal();
 
