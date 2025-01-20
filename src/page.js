@@ -611,7 +611,6 @@ function addPlacementBtnListeners(
   // Coords
   coordBtn.addEventListener("click", () => {
     // TODO: Validate coord ranges
-    // TODO: place the ship
     // TODO: add CSS (inside modal, place modal away from center of board, remove blur of background)
 
     // Create modal with form
@@ -693,7 +692,7 @@ function addPlacementBtnListeners(
 
     row.addEventListener("change", () => {
       const value = row.value;
-      rowLabel.textContent = `Row: ${value}`;
+      rowLabel.textContent = `Row: ${Number(value) + 1}`;
     });
 
     col.addEventListener("change", () => {
@@ -705,7 +704,17 @@ function addPlacementBtnListeners(
 
     submitBtn.addEventListener("click", (e) => {
       e.preventDefault();
-      // Place ship
+      player.board.placeShip(
+        shipName,
+        [Number(col.value), Number(row.value)],
+        [directionDown.checked ? 0 : 1, directionRight.checked ? 0 : 1]
+      );
+      const shipContainer = document.querySelector(
+        `.ship-container.${shipName}`
+      );
+      shipContainer.classList.remove("available");
+      shipContainer.classList.add("unavailable");
+      renderPlayerBoard(player, true);
       modal.close();
     });
 
